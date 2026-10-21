@@ -1,0 +1,36 @@
+{
+  "steps": [
+    {
+      "id": "example-step",
+      "title": {
+        "en": "[PLACEHOLDER] Example step — replace with a real step",
+        "ru": "[ЗАГЛУШКА] Пример шага — замените на настоящий шаг"
+      },
+      "summary": {
+        "en": "One short line: what the student does in this step.",
+        "ru": "Одна короткая строка: что студент делает на этом шаге."
+      },
+      "details": {
+        "en": [
+          "Each text in this list becomes a paragraph.",
+          "- A text that starts with a dash and a space becomes a bullet point.",
+          "- Bullet points that follow each other form one list."
+        ],
+        "ru": [
+          "Каждый текст в этом списке становится абзацем.",
+          "- Текст, который начинается с дефиса и пробела, становится пунктом списка.",
+          "- Пункты, идущие подряд, образуют один список."
+        ]
+      },
+      "links": [
+        {
+          "label": {
+            "en": "Example link — replace",
+            "ru": "Пример ссылки — замените"
+          },
+          "url": "https://example.com"
+        }
+      ]
+    }
+  ]
+}

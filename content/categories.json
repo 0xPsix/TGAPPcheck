@@ -1,0 +1,11 @@
+{
+  "categories": [
+    {
+      "id": "first-steps",
+      "title": {
+        "en": "First Steps",
+        "ru": "Первые шаги"
+      }
+    }
+  ]
+}
