@@ -1,7 +1,7 @@
 {
   "steps": [
     {
-      "id": "example-step"
+      "id": "example-step",
       "title": {
         "en": "[PLACEHOLDER] Example step — replace with a real step v2",
         "ru": "[ЗАГЛУШКА] Пример шага — замените на настоящий шаг"
