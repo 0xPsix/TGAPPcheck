@@ -31,6 +31,26 @@
           "url": "https://example.com"
         }
       ]
+    },
+    {
+      "id": "my-step",
+      "title":   { "en": "Title", "ru": "Заголовок" },
+      "summary": { "en": "One short line.", "ru": "Одна короткая строка." },
+      "details": {
+        "en": [
+          "A paragraph.",
+          "- A bullet point.",
+          "- Another bullet point."
+        ],
+        "ru": [
+          "Абзац.",
+          "- Пункт списка.",
+          "- Ещё пункт."
+        ]
+      },
+      "links": [
+        { "label": { "en": "Official site", "ru": "Официальный сайт" }, "url": "https://example.com" }
+      ]
     }
   ]
 }
