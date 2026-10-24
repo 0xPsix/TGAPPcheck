@@ -1,6 +1,13 @@
 {
   "categories": [
     {
+      "id": "preparation",
+      "title": {
+        "en": "Preparation",
+        "ru": "Подготовка"
+      }
+    },
+    {
       "id": "first-steps",
       "title": {
         "en": "First Steps",
