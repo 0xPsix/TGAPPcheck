@@ -33,6 +33,195 @@
             "url": "https://example.com"
         }
       ]      
+    },
+    {
+      "id": "preparation-apps",
+      "title": { "en": "Apps", "ru": "Приложения" },
+      "summary": {
+        "en": "Download apps and register in advance while you still have your usual internet access.",
+        "ru": "Скачайте и зарегистрируйтесь заранее, пока у вас есть привычный интернет."
+      },
+      "details": {
+        "en": [
+          "Essential:",
+          "- WeChat (微信): messaging, payments, mini programs and university chats.",
+          "- Alipay (支付宝): payments, taxis, transport and delivery.",
+          "- Amap / Gaode (高德地图): maps and navigation. Google Maps is almost useless in China.",
+          "- A translator with an offline Chinese language pack.",
+          "Useful:",
+          "- DiDi (滴滴出行): taxis, with an English version. Also available inside Alipay.",
+          "- Trip.com: train and flight tickets and hotels; available in English.",
+          "- Pleco: a Chinese dictionary.",
+          "- Meituan (美团): food delivery and bookings.",
+          "- Taobao (淘宝): shopping.",
+          "Important:",
+          "- Verify your identity in WeChat and Alipay using your passport before leaving home.",
+          "- Many familiar services do not work in China: Google, YouTube, Instagram, WhatsApp and Telegram. Agree in advance with family and friends how you will stay in touch (for example, through WeChat)."
+        ],
+        "ru": [
+          "Обязательные:",
+          "- WeChat (微信): мессенджер, оплата, мини-программы, чаты вуза.",
+          "- Alipay (支付宝): оплата, такси, транспорт, доставка.",
+          "- Amap / Gaode (高德地图): карты и навигация. Google Maps в Китае почти бесполезны.",
+          "- Переводчик с офлайн-пакетом китайского языка.",
+          "Полезные:",
+          "- DiDi (滴滴出行): такси, есть англоязычная версия. Также доступен внутри Alipay.",
+          "- Trip.com: билеты на поезда и самолёты, отели, работает на английском.",
+          "- Pleco: словарь китайского языка.",
+          "- Meituan (美团): доставка еды и бронирования.",
+          "- Taobao (淘宝): покупки.",
+          "Важно:",
+          "- Пройдите верификацию в WeChat и Alipay по паспорту ещё дома.",
+          "- Многие привычные сервисы в Китае не работают: Google, YouTube, Instagram, WhatsApp, Telegram. Заранее договоритесь с близкими, как будете на связи (например, через WeChat)."
+        ]
+      }
+    },
+    {
+      "id": "initial-connectivity",
+      "title": { "en": "Connectivity for the first few days", "ru": "Связь на первые дни" },
+      "summary": {
+        "en": "You will get a Chinese SIM card only after arriving.",
+        "ru": "Китайскую сим-карту вы получите только после прилёта."
+      },
+      "details": {
+        "en": [
+          "- Activate roaming with your operator or buy an international eSIM before departure.",
+          "- When roaming or using a foreign eSIM, internet traffic usually passes through a foreign operator's network, so many familiar services remain accessible.",
+          "- Check that your phone supports eSIM or two SIM cards and is not locked to an operator.",
+          "- Save your student adviser's and university international office's contact details on your phone."
+        ],
+        "ru": [
+          "- Подключите роуминг у своего оператора или купите международную eSIM до вылета.",
+          "- При роуминге и через зарубежные eSIM интернет-трафик обычно идёт через сеть иностранного оператора, поэтому многие привычные сервисы остаются доступны.",
+          "- Проверьте, что телефон поддерживает eSIM или две сим-карты и не привязан к оператору.",
+          "- Сохраните в телефоне контакты куратора и международного отдела вуза."
+        ]
+      }
+    },
+    {
+      "id": "money-alipay",
+      "title": { "en": "Money and topping up Alipay", "ru": "Деньги и пополнение Alipay" },
+      "summary": {
+        "en": "Cash is rarely used in China; almost everything is paid by QR code.",
+        "ru": "Наличными в Китае платят редко, почти всё через QR-код."
+      },
+      "details": {
+        "en": [
+          "Foreign bank card (Visa / Mastercard issued outside Russia):",
+          "- Can be linked directly to Alipay and WeChat Pay.",
+          "- Large payments incur a fee. Check the current threshold and percentage.",
+          "- There are limits per transaction and per year.",
+          "- The simplest option for the first few weeks.",
+          "Cards issued by Russian banks:",
+          "- Visa and Mastercard cards from Russian banks do not work abroad.",
+          "- UnionPay cards from Russian banks work inconsistently in China, and many are declined. Do not rely on them as your only payment method.",
+          "- Some Russian banks offer yuan transfers to Chinese cards or Alipay. Terms change frequently; check with your bank.",
+          "- You can open a yuan account with a Russian bank in advance to transfer money to a Chinese card later.",
+          "Telegram money exchangers (P2P):",
+          "- You transfer rubles, and they top up your Alipay or Chinese bank card in yuan.",
+          "- Fraud risk: use only trusted exchangers with reviews and start with small amounts.",
+          "- Freezing risk: if money in the chain is linked to fraud, Chinese police may freeze your bank card. Unfreezing it can take a long time.",
+          "- Never share passwords, SMS codes or access to your accounts.",
+          "Cash:",
+          "- Bring some yuan or US dollars for the first few days.",
+          "- US dollars can be exchanged at a Chinese bank using your passport.",
+          "- Cash must be declared if it exceeds the equivalent of US$5,000 or 20,000 yuan.",
+          "After arrival:",
+          "- The most reliable long-term option is a Chinese bank card linked to Alipay and WeChat (see First Steps)."
+        ],
+        "ru": [
+          "Карта иностранного банка (Visa / Mastercard, выпущенная не в России):",
+          "- Привязывается к Alipay и WeChat Pay напрямую.",
+          "- За крупные платежи берётся комиссия. Проверьте актуальный порог и процент.",
+          "- Есть лимиты на сумму одной операции и на год.",
+          "- Самый простой вариант на первые недели.",
+          "Карты российских банков:",
+          "- Visa и Mastercard российских банков за границей не работают.",
+          "- Карты UnionPay российских банков в Китае работают нестабильно, многие из них отклоняются. Не рассчитывайте на них как на единственный способ оплаты.",
+          "- Некоторые российские банки предлагают переводы в юанях на китайские карты или в Alipay. Условия часто меняются, уточняйте в своём банке.",
+          "- Можно заранее открыть юаневый счёт в российском банке, чтобы потом переводить деньги на китайскую карту.",
+          "Обменники в Telegram (P2P):",
+          "- Вы переводите рубли, а вам пополняют Alipay или китайскую карту в юанях.",
+          "- Риск мошенничества: работайте только с проверенными обменниками с отзывами и начинайте с небольших сумм.",
+          "- Риск блокировки: если деньги в цепочке связаны с мошенничеством, китайская полиция может заморозить вашу банковскую карту. Разблокировка бывает долгой.",
+          "- Никому не передавайте пароли, коды из SMS и доступ к аккаунтам.",
+          "Наличные:",
+          "- Возьмите немного юаней или долларов на первые дни.",
+          "- Доллары можно обменять в китайском банке по паспорту.",
+          "- Наличные с собой нужно декларировать, если сумма больше 5 000 $ в эквиваленте или больше 20 000 юаней.",
+          "После прилёта:",
+          "- Самый надёжный вариант на долгий срок — китайская банковская карта, привязанная к Alipay и WeChat (см. «Первые шаги»)."
+        ]
+      }
+    },
+    {
+      "id": "packing",
+      "title": { "en": "What to bring", "ru": "Что взять с собой" },
+      "summary": {
+        "en": "You can buy many things locally, but some are better brought from home.",
+        "ru": "Многое можно купить на месте, но кое-что лучше привезти."
+      },
+      "details": {
+        "en": [
+          "Electronics:",
+          "- A plug adapter. China uses 220 V and plug types A, C and I.",
+          "- A power bank. Only power banks bearing the 3C marking are allowed on domestic flights in China. Check your airline's current rules.",
+          "- A laptop and chargers.",
+          "Medication:",
+          "- A basic first-aid kit with familiar medicines.",
+          "- Bring prescription medicines in their original packaging, with a prescription or doctor's letter, preferably translated into English.",
+          "- Some medicines freely available at home cannot be brought into China. Check their ingredients in advance.",
+          "Clothes and everyday items:",
+          "- Clothes suited to your city's climate: northern China has cold winters, while southern China has hot, humid summers.",
+          "- Ask the university whether the dormitory provides bed linen, a pillow and a blanket.",
+          "- Large shoe sizes can be difficult to find in China.",
+          "Other:",
+          "- Small souvenirs from home for your student adviser, neighbours and teachers."
+        ],
+        "ru": [
+          "Техника:",
+          "- Переходник для розеток. В Китае 220 В, розетки типов A, C и I.",
+          "- Пауэрбанк. На внутренних рейсах в Китае разрешены только пауэрбанки с маркировкой 3C. Проверьте актуальные правила авиакомпании.",
+          "- Ноутбук и зарядки.",
+          "Лекарства:",
+          "- Базовая аптечка с привычными лекарствами.",
+          "- Рецептурные лекарства берите в оригинальной упаковке, с рецептом или справкой от врача, желательно с переводом на английский.",
+          "- Некоторые лекарства, свободно продающиеся дома, в Китай ввозить запрещено. Проверьте состав заранее.",
+          "Одежда и быт:",
+          "- Одежду по климату вашего города: в северном Китае холодная зима, в южном жаркое и влажное лето.",
+          "- Уточните у вуза, выдают ли в общежитии постельное бельё, подушку и одеяло.",
+          "- Обувь больших размеров в Китае бывает сложно найти.",
+          "Прочее:",
+          "- Небольшие сувениры из дома для куратора, соседей и преподавателей."
+        ]
+      }
+    },
+    {
+      "id": "before-departure",
+      "title": { "en": "Before departure", "ru": "Перед вылетом" },
+      "summary": { "en": "Final check.", "ru": "Последняя проверка." },
+      "details": {
+        "en": [
+          "- Confirm your arrival date and the last day of registration (报到) with the university.",
+          "- Find out whether the university provides airport pickup, or how to get there yourself.",
+          "- If the dormitory is unavailable on your arrival day, book a hotel for the first few nights.",
+          "- Save an offline copy of the dormitory or hotel address in Chinese. You can show it to a taxi driver.",
+          "- Download offline maps and an offline translator.",
+          "- Notify your bank about the trip so your card is not blocked.",
+          "- Leave copies of your documents and your itinerary with family or friends.",
+          "- Save the number of your country's embassy or consulate in China."
+        ],
+        "ru": [
+          "- Подтвердите с вузом дату прибытия и последний день регистрации (报到).",
+          "- Узнайте, встречает ли вуз в аэропорту, или как добраться самостоятельно.",
+          "- Если общежитие недоступно в день прилёта, забронируйте отель на первые ночи.",
+          "- Сохраните офлайн-копию адреса общежития или отеля на китайском. Её удобно показать таксисту.",
+          "- Скачайте офлайн-карты и офлайн-переводчик.",
+          "- Предупредите свой банк о поездке, чтобы карту не заблокировали.",
+          "- Оставьте близким копии документов и свой маршрут.",
+          "- Сохраните номер посольства или консульства своей страны в Китае."
+        ]
+      }
     }
   ]
 }

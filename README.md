@@ -109,3 +109,11 @@ tests/content.test.js           automatic tests (npm test)
 ```
 
 There are no secrets in this repo, and the app never needs the bot token. Never commit `.env` files or tokens: the repo is public.
+
+### Markdown content sources
+
+`mds/checklist_ru.md` and `mds/preparation_ru.md` are Russian drafting sources; the app reads only the JSON files in `content/steps/`. Editing Markdown does not update the app automatically.
+
+Missing entries were transferred into JSON with English translations, leaving previously entered steps unchanged. Markdown subsection labels become plain-text detail lines; unfinished `[Подробнее](#)` links and future-category planning notes are not published as new links or steps.
+
+This transfer does not verify the legal, financial or travel claims in the drafts. Review their accuracy before publishing.

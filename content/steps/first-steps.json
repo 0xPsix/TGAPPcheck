@@ -141,6 +141,168 @@
           "- Бланк временной регистрации (может понадобиться)"
         ]
       }
+    },
+    {
+      "id": "medical-examination",
+      "title": { "en": "Medical examination", "ru": "Медосмотр" },
+      "summary": {
+        "en": "Required for a residence permit if you have an X1 visa.",
+        "ru": "Нужен для вида на жительство, если у вас виза X1."
+      },
+      "details": {
+        "en": [
+          "If your university arranges the examination:",
+          "- Follow announcements from the international office — universities often organise a group trip for students.",
+          "If you need to arrange it yourself:",
+          "- The examination takes place at an International Travel Healthcare Center (国际旅行卫生保健中心).",
+          "- Arrive on an empty stomach — a blood test is required.",
+          "- Results are usually ready within a few working days.",
+          "- Check the cost with the centre in your city.",
+          "If you had the examination in your home country:",
+          "- In some cases, a medical certificate from your home country is accepted, but it must be verified at a Chinese centre. Check in advance.",
+          "What to bring:",
+          "- Passport",
+          "- Photos",
+          "- Money for the fee"
+        ],
+        "ru": [
+          "Если университет организует медосмотр:",
+          "- Следите за объявлениями международного отдела — часто вуз собирает группу и везёт студентов централизованно.",
+          "Если нужно пройти самостоятельно:",
+          "- Медосмотр проходят в Международном центре здоровья путешественников (国际旅行卫生保健中心).",
+          "- Приходите натощак — сдаётся анализ крови.",
+          "- Результаты обычно готовы через несколько рабочих дней.",
+          "- Стоимость — уточните в центре вашего города.",
+          "Если вы прошли медосмотр дома:",
+          "- В некоторых случаях принимают медицинскую справку из своей страны, но её нужно заверить в китайском центре. Уточните заранее.",
+          "Что взять с собой:",
+          "- Паспорт",
+          "- Фотографии",
+          "- Деньги на оплату"
+        ]
+      }
+    },
+    {
+      "id": "medical-insurance",
+      "title": { "en": "Medical insurance", "ru": "Медицинская страховка" },
+      "summary": {
+        "en": "Mandatory for all international students.",
+        "ru": "Обязательна для всех иностранных студентов."
+      },
+      "details": {
+        "en": [
+          "- Most universities require insurance approved by the university — check with the international office.",
+          "- It is usually purchased for a year, sometimes for a semester.",
+          "- Find out which hospitals are covered and how to claim reimbursement.",
+          "- Save your policy and the insurance company's hotline number."
+        ],
+        "ru": [
+          "- Большинство университетов требуют купить страховку, одобренную вузом, — уточните в международном отделе.",
+          "- Как правило, покупается на год, иногда на семестр.",
+          "- Узнайте, какие больницы работают по страховке и как получить компенсацию расходов.",
+          "- Сохраните полис и номер горячей линии страховой компании."
+        ]
+      }
+    },
+    {
+      "id": "residence-permit",
+      "title": { "en": "Residence permit", "ru": "Вид на жительство" },
+      "summary": {
+        "en": "An X1 visa is valid for 30 days after entry — you need to obtain a residence permit (居留许可) within that time.",
+        "ru": "Виза X1 действует 30 дней после въезда — за это время нужно оформить вид на жительство (居留许可)."
+      },
+      "details": {
+        "en": [
+          "If you have an X1 visa (studying for more than 180 days):",
+          "- Submit your documents to your city's Exit-Entry Administration (出入境管理局).",
+          "- The university often helps prepare the documents or submits them for you.",
+          "- Your passport is retained during processing (usually up to 15 working days) — you will receive a receipt; keep it.",
+          "- The fee depends on the duration of the residence permit.",
+          "If you have an X2 visa (studying for up to 180 days):",
+          "- A residence permit is not required — keep track of your visa's expiry date.",
+          "What to bring:",
+          "- Passport with visa",
+          "- Temporary registration form",
+          "- Medical examination results",
+          "- JW201 or JW202 form",
+          "- Admission letter",
+          "- Certificate from the university",
+          "- Photos",
+          "- Money for the fee",
+          "Important:",
+          "- Do not plan trips abroad while your passport is being processed."
+        ],
+        "ru": [
+          "Если у вас виза X1 (обучение дольше 180 дней):",
+          "- Подайте документы в Управление по вопросам въезда и выезда (出入境管理局) вашего города.",
+          "- Часто университет помогает собрать документы или подаёт их сам.",
+          "- На время оформления паспорт забирают (обычно до 15 рабочих дней) — вам выдадут квитанцию, сохраните её.",
+          "- Стоимость зависит от срока вида на жительство.",
+          "Если у вас виза X2 (обучение до 180 дней):",
+          "- Вид на жительство не нужен — следите за сроком действия визы.",
+          "Что взять с собой:",
+          "- Паспорт с визой",
+          "- Бланк временной регистрации",
+          "- Результаты медосмотра",
+          "- Форма JW201 или JW202",
+          "- Письмо о зачислении",
+          "- Справка из университета",
+          "- Фотографии",
+          "- Деньги на оплату",
+          "Важно:",
+          "- Не планируйте поездки за границу, пока паспорт находится на оформлении."
+        ]
+      }
+    },
+    {
+      "id": "wechat-alipay",
+      "title": { "en": "WeChat and Alipay", "ru": "WeChat и Alipay" },
+      "summary": {
+        "en": "Almost all payments in China use QR codes.",
+        "ru": "Почти все оплаты в Китае — через QR-код."
+      },
+      "details": {
+        "en": [
+          "- Install WeChat (微信) and Alipay (支付宝).",
+          "- Verify your identity using your passport.",
+          "- Link a Chinese bank card (foreign cards can also be used, but with restrictions and fees).",
+          "- Ask friends or your student adviser to add you — some WeChat features require verification by another user."
+        ],
+        "ru": [
+          "- Установите WeChat (微信) и Alipay (支付宝).",
+          "- Пройдите верификацию личности по паспорту.",
+          "- Привяжите китайскую банковскую карту (иностранную тоже можно, но с ограничениями и комиссиями).",
+          "- Попросите друзей или куратора добавить вас — некоторые функции WeChat требуют подтверждения от другого пользователя."
+        ]
+      }
+    },
+    {
+      "id": "useful-apps-transport",
+      "title": { "en": "Useful apps and transport", "ru": "Полезные приложения и транспорт" },
+      "summary": {
+        "en": "Maps, taxis, delivery and trains.",
+        "ru": "Карты, такси, доставка, поезда."
+      },
+      "details": {
+        "en": [
+          "- Maps: Amap / Gaode (高德地图), Baidu Maps (百度地图)",
+          "- Taxis: DiDi (滴滴出行)",
+          "- Food delivery: Meituan (美团), Ele.me (饿了么)",
+          "- Shopping: Taobao (淘宝), JD (京东)",
+          "- Trains: 12306",
+          "- Translator: —",
+          "- Metro and buses: a transport QR code in Alipay / WeChat or a city transport card."
+        ],
+        "ru": [
+          "- Карты: Amap / Gaode (高德地图), Baidu Maps (百度地图)",
+          "- Такси: DiDi (滴滴出行)",
+          "- Доставка еды: Meituan (美团), Ele.me (饿了么)",
+          "- Покупки: Taobao (淘宝), JD (京东)",
+          "- Поезда: 12306",
+          "- Переводчик: —",
+          "- Метро и автобусы: транспортный QR-код в Alipay / WeChat или транспортная карта города."
+        ]
+      }
     }
   ]
 }
