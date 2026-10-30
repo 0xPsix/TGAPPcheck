@@ -76,28 +76,50 @@ function notice(text) {
 // ---------- views ----------
 
 function homeView(categories) {
-  return el(
-    'ul',
-    { className: 'card-list' },
-    ...categories.map((category) =>
-      el('li', {}, el('a', { className: 'card', href: `#/c/${category.id}`, text: category.title[lang] })),
+  const fragment = document.createDocumentFragment();
+  fragment.append(
+    el('section', { className: 'intro' },
+      el('h2', { text: UI[lang].introTitle }),
+      el('p', { text: UI[lang].introText }),
+    ),
+    el('ul', { className: 'card-list' },
+      ...categories.map((category) =>
+        el('li', {}, el('a', { className: 'card', href: `#/c/${category.id}` },
+          el('div', { className: 'card-copy' },
+            el('span', { className: 'card-title', text: category.title[lang] }),
+            category.description
+              ? el('span', { className: 'card-description', text: category.description[lang] })
+              : null,
+          ),
+        )),
+      ),
     ),
   );
+  return fragment;
 }
 
 function detailsContent(lines) {
   const fragment = document.createDocumentFragment();
+  let container = fragment;
   let list = null;
   for (const line of lines) {
-    if (line.startsWith('- ')) {
+    const bullet = line.startsWith('- ');
+    if (!bullet && line.endsWith(':')) {
+      let className = 'detail-section';
+      if (line === UI[lang].whatToBring) className += ' detail-section--bring';
+      if (line === UI[lang].important) className += ' detail-section--important';
+      container = el('section', { className }, el('h3', { text: line }));
+      fragment.append(container);
+      list = null;
+    } else if (bullet) {
       if (!list) {
         list = el('ul');
-        fragment.append(list);
+        container.append(list);
       }
       list.append(el('li', { text: line.slice(2) }));
     } else {
       list = null;
-      fragment.append(el('p', { text: line }));
+      container.append(el('p', { text: line }));
     }
   }
   return fragment;

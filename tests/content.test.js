@@ -78,6 +78,18 @@ test('rejects a category id with spaces and capitals', () => {
   assert.ok(hasMessage(errors, '"id"'), errors.join('\n'));
 });
 
+test('category descriptions are optional, but require both languages when present', () => {
+  const category = { id: 'preparation', title: text('Preparation', 'Подготовка') };
+  assert.deepEqual(validateCategories({ categories: [category] }), []);
+  assert.deepEqual(validateCategories({
+    categories: [{ ...category, description: text('Before departure', 'Перед вылетом') }],
+  }), []);
+  for (const description of [{ en: 'Before departure' }, { en: 'Before departure', ru: ' ' }, 'Before departure']) {
+    const errors = validateCategories({ categories: [{ ...category, description }] });
+    assert.ok(hasMessage(errors, '"description'), errors.join('\n'));
+  }
+});
+
 test('JSON errors point to a line', () => {
   const source = '{\n  "steps": [],\n}';
   let parseError;

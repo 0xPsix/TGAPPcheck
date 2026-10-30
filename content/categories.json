@@ -5,6 +5,10 @@
       "title": {
         "en": "Preparation",
         "ru": "Подготовка"
+      },
+      "description": {
+        "en": "Documents, apps and practical preparations before you fly.",
+        "ru": "Документы, приложения и практическая подготовка перед вылетом."
       }
     },
     {
@@ -12,6 +16,10 @@
       "title": {
         "en": "First Steps",
         "ru": "Первые шаги"
+      },
+      "description": {
+        "en": "Registration, everyday essentials and settling into Shanghai.",
+        "ru": "Регистрация, повседневные задачи и обустройство в Шанхае."
       }
     }
   ]

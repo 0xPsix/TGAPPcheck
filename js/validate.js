@@ -6,7 +6,7 @@ export const LANGS = ['en', 'ru'];
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const URL_RE = /^https?:\/\/\S+$/;
 
-const CATEGORY_FIELDS = ['id', 'title'];
+const CATEGORY_FIELDS = ['id', 'title', 'description'];
 const STEP_FIELDS = ['id', 'title', 'summary', 'details', 'links'];
 const LINK_FIELDS = ['label', 'url'];
 
@@ -126,7 +126,9 @@ function validateList(data, listKey, kind, allowedFields, checkItem) {
 }
 
 export function validateCategories(data) {
-  return validateList(data, 'categories', 'category', CATEGORY_FIELDS, () => {});
+  return validateList(data, 'categories', 'category', CATEGORY_FIELDS, (category, where, errors) => {
+    if ('description' in category) checkText(category.description, 'description', where, errors);
+  });
 }
 
 export function validateSteps(data) {

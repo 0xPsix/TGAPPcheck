@@ -6,7 +6,7 @@ Site: `https://0xpsix.github.io/TGAPPcheck/`. Confirm the exact address in your 
 
 ## Edit steps
 
-All texts students see live in the `content/` folder. You never need to touch the app code to change them.
+Step text and category descriptions live in the `content/` folder. You never need to touch the app code to change them. The home-screen introduction and other interface text live in `js/i18n.js`.
 
 - `content/categories.json`: the sections on the home screen, in display order.
 - `content/steps/<category id>.json`: the steps of one section, in display order. The app numbers them 1, 2, 3… for you.
@@ -19,13 +19,14 @@ All texts students see live in the `content/` folder. You never need to touch th
 | `steps` | top of a steps file | yes | a list with at least one step; list order = on-screen order |
 | `id` | category, step | yes | lowercase letters, digits and single hyphens, e.g. `bank-card`; unique within the file; never shown to students. A category's steps file is `content/steps/<its id>.json` |
 | `title` | category, step | yes | `{"en": "…", "ru": "…"}`, both filled in |
+| `description` | category | no | same shape as `title`; shown below the category title on its home-screen card |
 | `summary` | step | no | same shape as `title`; one short line under the title |
-| `details` | step | no | `{"en": ["…", "…"], "ru": ["…"]}`, opens when the student taps the step. Each text is a paragraph; a text starting with `- ` (dash and space) is a bullet point, and bullets in a row form one list |
+| `details` | step | no | `{"en": ["…", "…"], "ru": ["…"]}`, opens when the student taps the step. Each text is a paragraph; a text starting with `- ` is a bullet point. A non-bullet text ending in `:` starts a section heading |
 | `links` | step | no | a list of `{"label": {"en": "…", "ru": "…"}, "url": "https://…"}`; the url must start with `https://` or `http://` |
 
 Any other field name is reported as a mistake, so typos like `tittle` are caught. Texts are plain text: no HTML, no Markdown. Every text needs both `en` and `ru`. If you don't need an optional field, delete it entirely.
 
-`content/steps/first-steps.json` contains one example step marked `[PLACEHOLDER]`. Copy it to see the format, then replace it with real steps.
+Copy a step from `content/steps/first-steps.json` as a starting point. Give it a new unique `id` and replace its English and Russian texts.
 
 ### JSON rules to remember
 
@@ -33,6 +34,12 @@ Any other field name is reported as a mistake, so typos like `tittle` are caught
 - Put a comma between items, but never after the last item in a list or object.
 - A `"` inside a text must be written `\"`. Typographic quotes « » and “ ” are fine as they are.
 - You cannot press Enter inside a text. For a new paragraph, add a new item to the `details` list instead.
+
+### Detail sections
+
+Put `"What to bring:"` in the English details and `"Что взять с собой:"` in the Russian details to start a bordered document-list section. `"Important:"` and `"Важно:"` start an accent-highlighted notes section. Keep the colon.
+
+Following paragraphs and bullets belong to that section until the next non-bullet line ending in `:` (or the end of the details). Other such lines become ordinary section headings. These styles work in both the original theme and the red-and-white preview; no new step fields are needed.
 
 ### Edit on github.com
 
@@ -50,6 +57,7 @@ Copy a whole step block, from its `{` to its matching `}`, and paste it where th
 
 1. Add `{ "id": "<new-id>", "title": { "en": "…", "ru": "…" } }` to the list in `content/categories.json`. Its position sets its place on the home screen.
 2. Create `content/steps/<new-id>.json`, for example by copying `first-steps.json`, and write its steps.
+3. Optionally add `"description": {"en": "…", "ru": "…"}` beside the category's `title` to give its home-screen card a short description. Both languages are required if you include it.
 
 A steps file that is not listed in `categories.json` is a hidden draft. The check only warns about it, and the app does not show it.
 
@@ -118,6 +126,6 @@ There are no secrets in this repo, and the app never needs the bot token. Never 
 
 `mds/checklist_ru.md` and `mds/preparation_ru.md` are Russian drafting sources; the app reads only the JSON files in `content/steps/`. Editing Markdown does not update the app automatically.
 
-Missing entries were transferred into JSON with English translations, leaving previously entered steps unchanged. Markdown subsection labels become plain-text detail lines; unfinished `[Подробнее](#)` links and future-category planning notes are not published as new links or steps.
+Missing entries were transferred into JSON with English translations; the existing English example text has since been translated from its Russian counterpart. Russian step text, IDs and order remain unchanged. Markdown subsection labels are detail lines ending in `:`, which the app displays as section headings. Unfinished `[Подробнее](#)` links and future-category planning notes were not imported.
 
 This transfer does not verify the legal, financial or travel claims in the drafts. Review their accuracy before publishing.

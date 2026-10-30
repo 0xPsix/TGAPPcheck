@@ -7,14 +7,26 @@
         "ru": "Временная регистрация"
       },
       "summary": {
-        "en": "...",
+        "en": "Registration at your place of residence (住宿登记). Deadline: within 24 hours of moving in.",
         "ru": "Регистрация по месту проживания (住宿登记). Срок — 24 часа после заселения."
       },
       "details": {
         "en": [
-          "Each text in this list becomes a paragraph.",
-          "- A text that starts with a dash and a space becomes a bullet point.",
-          "- Bullet points that follow each other form one list."
+          "If you are staying at a hotel:",
+          "- The hotel registers you when you check in using your passport.",
+          "- Ask at reception to confirm that your registration has been completed.",
+          "- When moving from a hotel to other accommodation, you need to register again.",
+          "If you are staying in a dormitory:",
+          "- At some universities, the dormitory or international office handles registration — you only need your passport.",
+          "- At others, you need to visit the police station (派出所) near campus yourself.",
+          "- Ask the international office or dormitory manager how it works at your university.",
+          "If you are renting an apartment:",
+          "- You need to register yourself within 24 hours.",
+          "- Visit the local police station (派出所) responsible for your apartment's address, preferably together with your landlord.",
+          "- In some cities, registration can be completed online (through an app or a WeChat mini program) — check for your city.",
+          "Important:",
+          "Keep the registration form — you will need it for your residence permit and possibly for the bank.",
+          "You need to register again every time you move."
         ],
         "ru": [
           "Если вы заселились в отель:",
@@ -47,18 +59,19 @@
     {
       "id": "second-step",
       "title": {
-        "en": "Title",
+        "en": "SIM card",
         "ru": "Сим-карта"
       },
       "summary": {
-        "en": "One short line.",
+        "en": "You need a Chinese phone number for banking, WeChat, Alipay and delivery.",
         "ru": "Китайский номер нужен для банка, WeChat, Alipay и доставки."
       },
       "details": {
         "en": [
-          "A paragraph.",
-          "- A bullet point.",
-          "- Another bullet point."
+          "- The main operators are China Mobile (中国移动), China Unicom (中国联通) and China Telecom (中国电信).",
+          "- You must apply in person at an official operator's office — the SIM card is registered to your passport.",
+          "- Choose a plan with enough mobile data.",
+          "- Some universities offer student plans — check on campus."
         ],
         "ru": [
           "- Основные операторы: China Mobile (中国移动), China Unicom (中国联通), China Telecom (中国电信).",
@@ -80,18 +93,24 @@
     {
       "id": "third-step",
       "title": {
-        "en": "Title",
+        "en": "University enrolment",
         "ru": "Зачисление в университет"
       },
       "summary": {
-        "en": "One short line.",
+        "en": "Complete your official university registration (报到) on the specified dates.",
         "ru": "Официальная регистрация в вузе (报到) в указанные даты."
       },
       "details": {
         "en": [
-          "A paragraph.",
-          "- A bullet point.",
-          "- Another bullet point."
+          "- Visit the international office on the dates specified in your admission letter.",
+          "- Collect your student ID and campus card (校园卡) — it is used to pay at the cafeteria and laundry, and to enter the library.",
+          "- Find out who your student adviser is and join your class and international student WeChat groups.",
+          "- Universities usually recruit a group of volunteers from senior years each year to help newly admitted students get SIM cards, bank cards and so on.",
+          "What to bring:",
+          "- Passport with visa",
+          "- Admission letter (录取通知书)",
+          "- JW201 or JW202 form",
+          "- Original education documents (if required)"
         ],
         "ru": [
           "- Придите в международный отдел в даты, указанные в письме о зачислении.",
@@ -122,12 +141,20 @@
         "ru": "Банковская карта"
       },
       "summary": {
-        "en": "...",
+        "en": "Needed for scholarship payments and linking to WeChat Pay and Alipay.",
         "ru": "Нужна для стипендии, привязки к WeChat Pay и Alipay."
       },
       "details": {
         "en": [
-          "..."
+          "- Popular banks include Bank of China (中国银行), ICBC (工商银行), China Construction Bank (建设银行) and Agricultural Bank of China (农业银行).",
+          "- Ask the international office which bank the university works with — scholarships are often paid to a card from a specific bank.",
+          "- Requirements vary between banks and branches: some may ask for a residence permit.",
+          "- Enable SMS notifications and mobile banking.",
+          "What to bring:",
+          "- Passport",
+          "- Chinese phone number",
+          "- Student ID or certificate from the university",
+          "- Temporary registration form (may be needed)"
         ],
         "ru": [
           "- Популярные банки: Bank of China (中国银行), ICBC (工商银行), China Construction Bank (建设银行), Agricultural Bank of China (农业银行).",

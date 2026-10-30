@@ -12,6 +12,10 @@ export const UI = {
     home: 'Home',
     links: 'Links',
     design: 'Design',
+    introTitle: 'Settling into Shanghai, one step at a time.',
+    introText: 'Choose where you are in your journey: prepare before you fly, or find your next steps after arrival.',
+    whatToBring: 'What to bring:',
+    important: 'Important:',
   },
   ru: {
     appTitle: 'Чек-лист для студентов в Китае',
@@ -23,6 +27,10 @@ export const UI = {
     home: 'На главную',
     links: 'Ссылки',
     design: 'Дизайн',
+    introTitle: 'Обустройство в Шанхае — шаг за шагом.',
+    introText: 'Выберите свой этап: подготовка перед вылетом или первые шаги после приезда.',
+    whatToBring: 'Что взять с собой:',
+    important: 'Важно:',
   },
 };
 
