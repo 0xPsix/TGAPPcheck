@@ -221,6 +221,7 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.title = UI[lang].appTitle;
   document.getElementById('app-title').textContent = UI[lang].appTitle;
+  document.getElementById('design-toggle').textContent = UI[lang].design;
   for (const button of document.querySelectorAll('[data-lang]')) {
     button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
   }
@@ -229,6 +230,13 @@ function applyLang() {
 // ---------- startup ----------
 
 applyLang();
+// Temporary preview: CSS-only switch preserves navigation and expanded steps.
+document.getElementById('design-toggle').addEventListener('click', (event) => {
+  const enabled = document.documentElement.dataset.design !== 'red';
+  if (enabled) document.documentElement.dataset.design = 'red';
+  else delete document.documentElement.dataset.design;
+  event.currentTarget.setAttribute('aria-pressed', String(enabled));
+});
 for (const button of document.querySelectorAll('[data-lang]')) {
   button.addEventListener('click', () => {
     if (button.dataset.lang === lang) return;

@@ -188,3 +188,194 @@ details[open] .chevron {
   font-size: 12px;
   text-align: left;
 }
+
+/* Temporary design-preview control. */
+.topbar {
+  flex-wrap: wrap;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+#design-toggle {
+  border: 1px solid var(--hint);
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#design-toggle[aria-pressed="true"] {
+  border-color: var(--button);
+  background: var(--button);
+  color: var(--button-text);
+}
+
+/* Remove this scoped section when choosing the final design. */
+:root[data-design="red"] {
+  color-scheme: light;
+  --bg: #fff9f7;
+  --text: #302326;
+  --surface: #ffffff;
+  --hint: #746166;
+  --link: #b52337;
+  --button: #bd263c;
+  --button-text: #ffffff;
+  --preview-border: #efdde0;
+}
+
+[data-design="red"] body {
+  box-sizing: border-box;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 20px calc(32px + env(safe-area-inset-bottom));
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+[data-design="red"] .topbar {
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--preview-border);
+}
+
+[data-design="red"] .topbar h1 {
+  flex-basis: 100%;
+  max-width: 24ch;
+  font-size: clamp(26px, 5vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  font-weight: 750;
+}
+
+[data-design="red"] .lang-switch,
+[data-design="red"] #design-toggle {
+  border-color: var(--preview-border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+[data-design="red"] .header-controls button {
+  min-height: 44px;
+  padding: 8px 14px;
+  font-weight: 600;
+}
+
+[data-design="red"] #design-toggle[aria-pressed="true"] {
+  background: var(--button);
+  border-color: var(--button);
+}
+
+[data-design="red"] h2 {
+  margin: 8px 0 20px;
+  font-size: 24px;
+  letter-spacing: -0.025em;
+}
+
+[data-design="red"] .card-list,
+[data-design="red"] .steps {
+  gap: 14px;
+}
+
+[data-design="red"] .card,
+[data-design="red"] .step {
+  border: 1px solid var(--preview-border);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgb(92 24 39 / 4%);
+  padding: 20px;
+}
+
+[data-design="red"] .card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  border-left: 4px solid var(--button);
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+[data-design="red"] .card::after {
+  content: "→";
+  color: var(--button);
+}
+
+[data-design="red"] .step-text {
+  flex: 1;
+  min-width: 0;
+}
+
+[data-design="red"] .step-title {
+  display: block;
+  line-height: 1.4;
+}
+
+[data-design="red"] .step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  background: #fff0f1;
+  color: var(--button);
+}
+
+[data-design="red"] .step-summary {
+  margin-top: 6px;
+}
+
+[data-design="red"] .step:has(details[open]) {
+  border-color: #dca6b0;
+}
+
+[data-design="red"] .step-body {
+  padding: 18px 0 0;
+  margin-top: 18px;
+  border-top: 1px solid var(--preview-border);
+  font-size: 15px;
+}
+
+[data-design="red"] .step-body p,
+[data-design="red"] .step-body ul {
+  margin-bottom: 14px;
+}
+
+[data-design="red"] .step-body li + li {
+  margin-top: 8px;
+}
+
+[data-design="red"] .back-link {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+[data-design="red"] .chevron,
+[data-design="red"] .links-title {
+  color: var(--button);
+}
+
+[data-design="red"] .links-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+[data-design="red"] :is(button, a, summary):focus-visible {
+  outline: 3px solid var(--button);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) {
+  [data-design="red"] .card:hover {
+    border-color: var(--button);
+  }
+}

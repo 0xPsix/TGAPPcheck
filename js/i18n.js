@@ -11,6 +11,7 @@ export const UI = {
     notFound: 'This section was not found.',
     home: 'Home',
     links: 'Links',
+    design: 'Design',
   },
   ru: {
     appTitle: 'Чек-лист для студентов в Китае',
@@ -21,6 +22,7 @@ export const UI = {
     notFound: 'Раздел не найден.',
     home: 'На главную',
     links: 'Ссылки',
+    design: 'Дизайн',
   },
 };
 

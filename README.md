@@ -65,6 +65,10 @@ python3 -m http.server 8000 --bind 127.0.0.1       # preview at http://127.0.0.1
 
 The preview server listens only on your own computer (`127.0.0.1`). Stop it with Ctrl+C when you are done.
 
+### Temporary design preview
+
+Tap **Design** / **Дизайн** beside EN/RU to preview the red-and-white theme. Tap it again to return to the original Telegram theme. The toggle keeps your current page and expanded steps; it does not change content. Reloading or reopening the app resets to the original theme.
+
 ## One-time setup
 
 ### 1. Publish on GitHub Pages
