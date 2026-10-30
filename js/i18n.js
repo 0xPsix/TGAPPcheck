@@ -16,6 +16,10 @@ export const UI = {
     introText: 'Choose where you are in your journey: prepare before you fly, or find your next steps after arrival.',
     whatToBring: 'What to bring:',
     important: 'Important:',
+    progress: '{done} of {total} completed',
+    completedStep: 'Completed: {title}',
+    progressUnavailable: 'Progress unavailable',
+    progressNotSaved: 'Progress cannot be saved on this device. Changes will be lost when you close or reload the app.',
   },
   ru: {
     appTitle: 'Чек-лист для студентов в Китае',
@@ -31,6 +35,10 @@ export const UI = {
     introText: 'Выберите свой этап: подготовка перед вылетом или первые шаги после приезда.',
     whatToBring: 'Что взять с собой:',
     important: 'Важно:',
+    progress: 'Выполнено: {done} из {total}',
+    completedStep: 'Выполнено: {title}',
+    progressUnavailable: 'Прогресс недоступен',
+    progressNotSaved: 'На этом устройстве не удаётся сохранить прогресс. Изменения пропадут при закрытии или перезагрузке приложения.',
   },
 };
 

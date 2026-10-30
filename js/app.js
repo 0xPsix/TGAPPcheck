@@ -1,5 +1,6 @@
 import { UI, detectLang, saveLang } from './i18n.js';
 import { validateCategories, validateSteps, describeJsonError } from './validate.js';
+import { createProgressStore } from './progress.js';
 
 const tg = window.Telegram?.WebApp;
 const inTelegram = Boolean(tg?.initData);
@@ -8,6 +9,7 @@ const tgApi = inTelegram && tg.isVersionAtLeast('6.1');
 
 const screen = document.getElementById('screen');
 const contentCache = new Map(); // path -> Promise<data>
+const progress = createProgressStore();
 let lang = detectLang();
 let renderToken = 0;
 
@@ -73,6 +75,27 @@ function notice(text) {
   return el('p', { className: 'notice', text });
 }
 
+function progressText(categoryId, steps) {
+  return UI[lang].progress
+    .replace('{done}', String(progress.countComplete(categoryId, steps)))
+    .replace('{total}', String(steps.length));
+}
+
+function updateStorageWarning() {
+  const warning = screen.querySelector('.progress-warning');
+  if (warning) warning.hidden = progress.canSave;
+}
+
+function cardProgress(categoryId) {
+  const count = el('span', { className: 'card-progress', 'aria-live': 'polite', text: UI[lang].loading });
+  // Each card can still be opened when another category's content is unavailable.
+  loadContent(`content/steps/${categoryId}.json`, validateSteps).then(
+    ({ steps }) => { count.textContent = progressText(categoryId, steps); },
+    () => { count.textContent = UI[lang].progressUnavailable; },
+  );
+  return count;
+}
+
 // ---------- views ----------
 
 function homeView(categories) {
@@ -90,6 +113,7 @@ function homeView(categories) {
             category.description
               ? el('span', { className: 'card-description', text: category.description[lang] })
               : null,
+            cardProgress(category.id),
           ),
         )),
       ),
@@ -137,7 +161,7 @@ function linkView(link) {
   return anchor;
 }
 
-function stepView(step, index) {
+function stepView(categoryId, step, index, onChange) {
   const head = el(
     'div',
     { className: 'step-head' },
@@ -150,7 +174,21 @@ function stepView(step, index) {
     ),
   );
   const links = step.links || [];
-  const item = el('li', { className: 'step' });
+  const item = el('li', { className: 'step', 'data-step-id': step.id });
+  const checkbox = el('input', {
+    type: 'checkbox',
+    'aria-label': UI[lang].completedStep.replace('{title}', step.title[lang]),
+  });
+  checkbox.checked = progress.isComplete(categoryId, step.id);
+  item.classList.toggle('is-complete', checkbox.checked);
+  checkbox.addEventListener('change', () => {
+    progress.setComplete(categoryId, step.id, checkbox.checked);
+    item.classList.toggle('is-complete', checkbox.checked);
+    onChange();
+    updateStorageWarning();
+  });
+  // Outside <summary>: checking completion must not toggle the step details.
+  item.append(el('label', { className: 'step-check' }, checkbox));
   if (!step.details && links.length === 0) {
     item.append(head);
     return item;
@@ -170,9 +208,12 @@ function stepView(step, index) {
 
 function categoryView(category, steps) {
   const fragment = document.createDocumentFragment();
+  const count = el('p', { className: 'progress-summary', 'aria-live': 'polite', text: progressText(category.id, steps) });
+  const updateCount = () => { count.textContent = progressText(category.id, steps); };
   fragment.append(
     el('h2', { text: category.title[lang] }),
-    el('ol', { className: 'steps' }, ...steps.map(stepView)),
+    count,
+    el('ol', { className: 'steps' }, ...steps.map((step, index) => stepView(category.id, step, index, updateCount))),
   );
   return fragment;
 }
@@ -217,7 +258,9 @@ async function render() {
   }
   const show = (...nodes) => {
     const backLink = isCategory && !tgApi ? el('a', { className: 'back-link', href: '#/', text: `← ${UI[lang].home}` }) : null;
-    screen.replaceChildren(...(backLink ? [backLink] : []), ...nodes);
+    const warning = el('p', { className: 'progress-warning', role: 'status', text: UI[lang].progressNotSaved });
+    warning.hidden = progress.canSave;
+    screen.replaceChildren(...(backLink ? [backLink] : []), warning, ...nodes);
   };
 
   show(notice(UI[lang].loading));

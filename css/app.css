@@ -455,3 +455,77 @@ details[open] .chevron {
 [data-design="red"] .detail-section--important h3 {
   color: var(--button);
 }
+
+.card-progress {
+  display: block;
+  margin-top: 10px;
+  color: var(--link);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+
+.progress-summary {
+  margin: 0 0 16px;
+  color: var(--hint);
+  font-size: 14px;
+}
+
+.step {
+  position: relative;
+}
+
+.step-head {
+  padding-right: 42px;
+}
+
+.step-text {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.step-check {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.step-check input {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  accent-color: var(--button);
+  cursor: pointer;
+}
+
+.step-check input:focus-visible {
+  outline: 3px solid var(--button);
+  outline-offset: 4px;
+}
+
+.step.is-complete .step-num {
+  background: var(--hint);
+  color: var(--bg);
+}
+
+.progress-warning {
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  border: 1px solid var(--hint);
+  border-left: 4px solid var(--button);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+[data-design="red"] .step-check {
+  top: 12px;
+  right: 12px;
+}

@@ -1,8 +1,18 @@
 # Checklist for students in China (Telegram Mini App)
 
-A free Telegram Mini App for foreign students who are about to arrive, or have just arrived, in Shanghai. It shows a short, ordered list of steps, in English and Russian (switch with the EN / RU buttons). It is a read-only guide: no accounts and no personal data.
+A free Telegram Mini App for foreign students who are about to arrive, or have just arrived, in Shanghai. It shows a short, ordered list of steps, in English and Russian (switch with the EN / RU buttons). Students can track completion on their device without accounts or uploading personal information.
 
 Site: `https://0xpsix.github.io/TGAPPcheck/`. Confirm the exact address in your repo → Settings → Pages after the first deploy.
+
+## Track progress
+
+Use the checkbox beside a step to mark it complete; uncheck it to undo. Checking does not open or close the step text. Each category shows its completed count on the home card and inside the category. Completed steps remain readable and in their original order.
+
+Progress is saved in the browser or Telegram webview's `localStorage`, under `checklist.progress.v1`. It contains only category/step ID pairs. Closing and reopening on the same device and browser/webview normally keeps it; it does not sync across devices or between a browser and Telegram. Clearing webview/site data or moving to another hosting domain can erase or separate saved progress.
+
+If storage is blocked or saving fails, the app shows a warning and tracks completion only in memory until it is closed or reloaded. Unreadable saved data is left untouched and also triggers the warning.
+
+**Keep IDs stable:** reordering steps or editing their texts does not reset completion. Renaming a step ID or moving it to another category treats it as a new step. Renaming a category ID also separates its saved progress. Newly added IDs start incomplete, and removed steps do not inflate the counts. If an old ID is reused or restored, its old completion can reappear, so use a new ID for a genuinely new task.
 
 ## Edit steps
 
@@ -113,10 +123,12 @@ css/app.css                     styles; colors follow the Telegram theme
 js/app.js                       screens, navigation, loading content
 js/i18n.js                      interface texts (EN/RU) and language choice
 js/validate.js                  content rules (used by the app and by the check)
+js/progress.js                  local completion storage, keyed by category and step ID
 content/categories.json         home-screen sections
 content/steps/first-steps.json  steps of "First Steps"
 scripts/validate-content.js     the content check (npm run validate)
 tests/content.test.js           automatic tests (npm test)
+tests/progress.test.js          persistence, ID stability and storage-failure tests
 .github/workflows/deploy.yml    on every push: check → test → publish
 ```
 

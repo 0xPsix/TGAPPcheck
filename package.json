@@ -5,6 +5,6 @@
   "type": "module",
   "scripts": {
     "validate": "node scripts/validate-content.js",
-    "test": "node --test tests/content.test.js"
+    "test": "node --test tests/content.test.js tests/progress.test.js"
   }
 }
