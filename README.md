@@ -8,9 +8,13 @@ Site: `https://0xpsix.github.io/TGAPPcheck/`. Confirm the exact address in your 
 
 Use the checkbox beside a step to mark it complete; uncheck it to undo. Checking does not open or close the step text. Each category shows its completed count on the home card and inside the category. Completed steps remain readable and in their original order.
 
+The home screen also shows one combined progress bar with a count under it, for example "6 of 15 steps completed", once every category has loaded. The bar fills from left to right in the accent color of the active design. A card of a partly completed category shows "Resume at step N"; it opens that category and goes straight to the first unfinished step (the step opens and the app scrolls to it). A finished category shows "Completed ✓" on its card and inside the category. The deep link for one step is `#/c/<category id>/<step id>`; the app only scrolls to a step that exists.
+
 Progress is saved in the browser or Telegram webview's `localStorage`, under `checklist.progress.v1`. It contains only category/step ID pairs. Closing and reopening on the same device and browser/webview normally keeps it; it does not sync across devices or between a browser and Telegram. Clearing webview/site data or moving to another hosting domain can erase or separate saved progress.
 
 If storage is blocked or saving fails, the app shows a warning and tracks completion only in memory until it is closed or reloaded. Unreadable saved data is left untouched and also triggers the warning.
+
+The app also saves each content file it loads in the browser's Cache Storage. If a load then fails (no network or VPN), the app uses the saved copy instead of showing an error. So screens you have opened before keep working when you tap Try again or open the app again, as long as the page itself can load. A saved copy is replaced on every successful load, so it is up to date whenever you were online recently.
 
 **Keep IDs stable:** reordering steps or editing their texts does not reset completion. Renaming a step ID or moving it to another category treats it as a new step. Renaming a category ID also separates its saved progress. Newly added IDs start incomplete, and removed steps do not inflate the counts. If an old ID is reused or restored, its old completion can reappear, so use a new ID for a genuinely new task.
 

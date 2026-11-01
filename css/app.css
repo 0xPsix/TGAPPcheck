@@ -142,6 +142,25 @@ details[open] .chevron {
   transform: rotate(90deg);
 }
 
+details[open] .step-body {
+  animation: step-reveal 0.15s ease-out;
+}
+
+@keyframes step-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  details[open] .step-body {
+    transition: none;
+    animation: none;
+  }
+}
+
 .step-body {
   margin-top: 10px;
   padding-left: 40px;
@@ -456,14 +475,62 @@ details[open] .chevron {
   color: var(--button);
 }
 
-.card-progress {
+.card-status {
   display: block;
   margin-top: 10px;
+}
+
+.card-progress {
+  display: block;
   color: var(--link);
   font-size: 13px;
   font-weight: 600;
   line-height: 1.5;
   letter-spacing: normal;
+}
+
+/* A button styled as a link: <a> cannot nest inside the card's own <a>. */
+.card-resume {
+  display: block;
+  margin-top: 4px;
+  border: 0;
+  background: transparent;
+  color: var(--link);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+}
+
+.progress-total {
+  margin: 0 0 16px;
+}
+
+.progress-total-track {
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--hint);
+  overflow: hidden;
+}
+
+/* Fill uses the accent of the active design (Telegram theme or preview). */
+.progress-total-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--button);
+}
+
+.progress-total-text {
+  display: block;
+  margin-top: 6px;
+  color: var(--hint);
+  font-size: 14px;
 }
 
 .progress-summary {

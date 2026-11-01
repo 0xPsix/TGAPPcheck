@@ -12,6 +12,7 @@ const contentCache = new Map(); // path -> Promise<data>
 const progress = createProgressStore();
 let lang = detectLang();
 let renderToken = 0;
+let lastStepScroll = null; // route key of the last step the app scrolled to
 
 class ContentError extends Error {
   constructor(messages) {
@@ -23,11 +24,43 @@ class ContentError extends Error {
 
 // ---------- content loading ----------
 
+// Saved copies of content JSON, so "Try again" and a lost connection still work.
+const CONTENT_CACHE = 'tgappcheck-content-v1'; // bump to drop every saved copy
+
+function saveOfflineCopy(path, text) {
+  try {
+    caches.open(CONTENT_CACHE).then((cache) => cache.put(path, new Response(text))).catch(() => {});
+  } catch {
+    // Cache Storage unavailable (insecure context or old webview): online only.
+  }
+}
+
+async function readOfflineCopy(path) {
+  try {
+    const cached = await caches.match(path);
+    if (cached && cached.ok) return await cached.text();
+  } catch {
+    // Unavailable or broken cache: report no copy.
+  }
+  return null;
+}
+
 async function fetchContent(path, validateFn) {
   // Relative path (site lives under /<repo>/); no-cache = always revalidate, so edits show up without a rebuild.
-  const res = await fetch(path, { cache: 'no-cache' });
-  if (!res.ok) throw new ContentError([`${path}: HTTP ${res.status}`]);
-  const text = await res.text();
+  let text = null;
+  try {
+    const res = await fetch(path, { cache: 'no-cache' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    text = await res.text();
+    saveOfflineCopy(path, text);
+  } catch (networkError) {
+    const offline = await readOfflineCopy(path);
+    if (offline === null) {
+      const reason = networkError instanceof Error ? networkError.message : String(networkError);
+      throw new ContentError([`${path}: ${reason}`]);
+    }
+    text = offline;
+  }
   let data;
   try {
     data = JSON.parse(text);
@@ -50,9 +83,12 @@ function loadContent(path, validateFn) {
 
 // ---------- routing ----------
 
-// Anything that is not "#/c/<id>" is home, including Telegram's launch hash "#tgWebAppData=…".
+// "#/c/<id>" and "#/c/<id>/<step>" open a category; anything else is home,
+// including Telegram's launch hash "#tgWebAppData=…".
 function parseRoute(hash) {
-  const match = /^#\/c\/([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(hash);
+  let match = /^#\/c\/([a-z0-9]+(?:-[a-z0-9]+)*)\/([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(hash);
+  if (match) return { name: 'category', id: match[1], stepId: match[2] };
+  match = /^#\/c\/([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(hash);
   return match ? { name: 'category', id: match[1] } : { name: 'home' };
 }
 
@@ -76,9 +112,9 @@ function notice(text) {
 }
 
 function progressText(categoryId, steps) {
-  return UI[lang].progress
-    .replace('{done}', String(progress.countComplete(categoryId, steps)))
-    .replace('{total}', String(steps.length));
+  const done = progress.countComplete(categoryId, steps);
+  if (done === steps.length) return UI[lang].allDone;
+  return UI[lang].progress.replace('{done}', String(done)).replace('{total}', String(steps.length));
 }
 
 function updateStorageWarning() {
@@ -87,24 +123,54 @@ function updateStorageWarning() {
 }
 
 function cardProgress(categoryId) {
+  const status = el('span', { className: 'card-status' });
   const count = el('span', { className: 'card-progress', 'aria-live': 'polite', text: UI[lang].loading });
+  status.append(count);
   // Each card can still be opened when another category's content is unavailable.
   loadContent(`content/steps/${categoryId}.json`, validateSteps).then(
-    ({ steps }) => { count.textContent = progressText(categoryId, steps); },
+    ({ steps }) => {
+      count.textContent = progressText(categoryId, steps);
+      const done = progress.countComplete(categoryId, steps);
+      if (done === 0 || done === steps.length) return;
+      // A button, not a link: <a> cannot nest inside the card's own <a>.
+      const step = steps.find((entry) => !progress.isComplete(categoryId, entry.id));
+      const resume = el('button', {
+        type: 'button',
+        className: 'card-resume',
+        text: UI[lang].resume.replace('{n}', String(steps.indexOf(step) + 1)),
+      });
+      resume.addEventListener('click', (event) => {
+        event.preventDefault(); // stop the card link's navigation
+        event.stopPropagation();
+        location.hash = `#/c/${categoryId}/${step.id}`;
+      });
+      status.append(resume);
+    },
     () => { count.textContent = UI[lang].progressUnavailable; },
   );
-  return count;
+  return status;
 }
 
 // ---------- views ----------
 
 function homeView(categories) {
   const fragment = document.createDocumentFragment();
+  // Hidden until every category's steps have loaded; any failure keeps it hidden.
+  const fill = el('span', { className: 'progress-total-fill' });
+  const track = el('span', { className: 'progress-total-track', role: 'progressbar', 'aria-valuemin': '0' }, fill);
+  const label = el('span', { className: 'progress-total-text' });
+  const total = el(
+    'p',
+    { className: 'progress-total', 'aria-live': 'polite', hidden: true },
+    track,
+    label,
+  );
   fragment.append(
     el('section', { className: 'intro' },
       el('h2', { text: UI[lang].introTitle }),
       el('p', { text: UI[lang].introText }),
     ),
+    total,
     el('ul', { className: 'card-list' },
       ...categories.map((category) =>
         el('li', {}, el('a', { className: 'card', href: `#/c/${category.id}` },
@@ -119,6 +185,23 @@ function homeView(categories) {
       ),
     ),
   );
+  Promise.all(categories.map((category) =>
+    loadContent(`content/steps/${category.id}.json`, validateSteps).then(
+      ({ steps }) => ({ done: progress.countComplete(category.id, steps), total: steps.length }),
+      () => null, // one unavailable category hides the line; its card shows why
+    ),
+  )).then((results) => {
+    if (results.includes(null)) return;
+    const done = results.reduce((sum, part) => sum + part.done, 0);
+    const count = results.reduce((sum, part) => sum + part.total, 0);
+    total.hidden = false;
+    track.setAttribute('aria-valuemax', String(count));
+    track.setAttribute('aria-valuenow', String(done));
+    fill.style.width = `${Math.round((done / count) * 100)}%`;
+    label.textContent = UI[lang].progressTotal
+      .replace('{done}', String(done))
+      .replace('{total}', String(count));
+  });
   return fragment;
 }
 
@@ -209,7 +292,15 @@ function stepView(categoryId, step, index, onChange) {
 function categoryView(category, steps) {
   const fragment = document.createDocumentFragment();
   const count = el('p', { className: 'progress-summary', 'aria-live': 'polite', text: progressText(category.id, steps) });
-  const updateCount = () => { count.textContent = progressText(category.id, steps); };
+  const updateCount = () => {
+    count.textContent = progressText(category.id, steps);
+    if (!tgApi || !tg.HapticFeedback) return;
+    if (progress.countComplete(category.id, steps) === steps.length) {
+      tg.HapticFeedback.notificationOccurred('success');
+    } else {
+      tg.HapticFeedback.selectionChanged();
+    }
+  };
   fragment.append(
     el('h2', { text: category.title[lang] }),
     count,
@@ -252,6 +343,8 @@ async function render() {
   const route = parseRoute(location.hash);
   const isCategory = route.name === 'category';
 
+  if (!isCategory || !route.stepId) lastStepScroll = null;
+
   if (tgApi) {
     if (isCategory) tg.BackButton.show();
     else tg.BackButton.hide();
@@ -276,7 +369,19 @@ async function render() {
       return;
     }
     const { steps } = await loadContent(`content/steps/${category.id}.json`, validateSteps);
-    if (token === renderToken) show(categoryView(category, steps));
+    if (token === renderToken) {
+      show(categoryView(category, steps));
+      // A "#/c/<id>/<step>" route opens and scrolls to that step, once per route.
+      if (route.stepId && lastStepScroll !== `${route.id}/${route.stepId}`) {
+        lastStepScroll = `${route.id}/${route.stepId}`;
+        const target = screen.querySelector(`[data-step-id="${route.stepId}"]`);
+        if (target) {
+          const details = target.querySelector('details');
+          if (details) details.open = true;
+          target.scrollIntoView({ block: 'start' });
+        }
+      }
+    }
   } catch (error) {
     if (token === renderToken) show(errorView(error));
   }
