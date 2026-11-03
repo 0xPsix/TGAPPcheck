@@ -30,16 +30,7 @@
               "- Бумажные копии всех документов, а также сканы в облаке и на телефоне.",
               "- Туристическая страховка на первые недели, пока не оформлена студенческая."
           ]
-      },
-      "links": [
-          {
-            "label": {
-              "en": "Learn more",
-              "ru": "Подробнее"
-          },
-            "url": "https://example.com"
-        }
-      ]      
+      }
     },
     {
       "id": "preparation-apps",
@@ -80,6 +71,36 @@
           "Важно:",
           "- Пройдите верификацию в WeChat и Alipay по паспорту ещё дома.",
           "- Многие привычные сервисы в Китае не работают: Google, YouTube, Instagram, WhatsApp, Telegram. Заранее договоритесь с близкими, как будете на связи (например, через WeChat)."
+        ]
+      }
+    },
+    {
+      "id": "vpn",
+      "title": { "en": "VPN", "ru": "VPN" },
+      "summary": {
+        "en": "Install and test it before you fly: many everyday services are blocked in mainland China.",
+        "ru": "Установите и проверьте до вылета: многие привычные сервисы в материковом Китае заблокированы."
+      },
+      "details": {
+        "en": [
+          "- Google, YouTube, Instagram, WhatsApp and Telegram do not work without a VPN — the same services listed in the Apps step.",
+          "- Choose a provider that works in mainland China: not all of them do.",
+          "- Install the app and set up your account and payment while you still have your usual internet.",
+          "- Test the connection before departure, and again on the airport Wi-Fi after landing.",
+          "- Keep a second provider as a backup: when one stops working, another often still does.",
+          "- On campus and dormitory Wi-Fi a VPN may be slower or blocked; mobile data often works better.",
+          "Important:",
+          "- Using unlicensed VPNs in China is a legal grey area. Follow your university's rules and check the current situation."
+        ],
+        "ru": [
+          "- Google, YouTube, Instagram, WhatsApp и Telegram не работают без VPN — те же сервисы, что в шаге «Приложения».",
+          "- Выберите провайдера, который работает в материковом Китае: работают не все.",
+          "- Установите приложение и настройте аккаунт и оплату, пока у вас есть привычный интернет.",
+          "- Проверьте соединение до вылета и ещё раз в аэропорту после посадки.",
+          "- Держите второго провайдера как запасной вариант: когда один перестаёт работать, другой часто ещё работает.",
+          "- В Wi-Fi кампуса и общежития VPN может работать медленнее или быть заблокирован; мобильный интернет часто лучше.",
+          "Важно:",
+          "- Использование нелицензированных VPN в Китае — юридически серая зона. Следуйте правилам вашего университета и следите за актуальной информацией."
         ]
       }
     },
