@@ -178,12 +178,14 @@ function homeView(categories) {
     track,
     label,
   );
+  const continueAction = el('a', { className: 'continue-action', hidden: true });
   fragment.append(
     el('section', { className: 'intro' },
       el('h2', { text: UI[lang].introTitle }),
       el('p', { text: UI[lang].introText }),
     ),
     total,
+    continueAction,
     el('ul', { className: 'card-list' },
       ...categories.map((category) =>
         el('li', {}, el('a', { className: 'card', href: `#/c/${category.id}` },
@@ -200,7 +202,7 @@ function homeView(categories) {
   );
   Promise.all(categories.map((category) =>
     loadContent(`content/steps/${category.id}.json`, validateSteps).then(
-      ({ steps }) => ({ done: progress.countComplete(category.id, steps), total: steps.length }),
+      ({ steps }) => ({ steps, done: progress.countComplete(category.id, steps), total: steps.length }),
       () => null, // one unavailable category hides the line; its card shows why
     ),
   )).then((results) => {
@@ -214,6 +216,17 @@ function homeView(categories) {
     label.textContent = UI[lang].progressTotal
       .replace('{done}', String(done))
       .replace('{total}', String(count));
+    const nextCategory = results.findIndex((part) => part.done < part.total);
+    if (nextCategory !== -1) {
+      const category = categories[nextCategory];
+      const step = results[nextCategory].steps.find((entry) => !progress.isComplete(category.id, entry.id));
+      continueAction.href = `#/c/${category.id}/${step.id}`;
+      continueAction.append(
+        el('span', { className: 'continue-label', text: done === 0 ? UI[lang].startChecklist : UI[lang].continueChecklist }),
+        el('span', { className: 'continue-next', text: `${category.title[lang]} · ${step.title[lang]}` }),
+      );
+      continueAction.hidden = false;
+    }
   });
   return fragment;
 }
@@ -257,6 +270,30 @@ function linkView(link) {
   return anchor;
 }
 
+function phrasesView(phrases) {
+  return el('details', { className: 'phrases' },
+    el('summary', {}, el('span', { text: UI[lang].chinesePhrases }),
+      el('span', { className: 'phrases-indicator', 'aria-hidden': 'true', text: '+' })),
+    el('ul', { className: 'phrase-list' }, ...phrases.map((phrase) => {
+      const status = el('span', { className: 'phrase-copy-status', role: 'status' });
+      const copy = el('button', { type: 'button', className: 'phrase-copy', text: UI[lang].copyChinese });
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(phrase.zh);
+          status.textContent = UI[lang].copied;
+        } catch {
+          status.textContent = UI[lang].copyFailed;
+        }
+      });
+      return el('li', { className: 'phrase' },
+        el('p', { className: 'phrase-meaning', text: phrase.meaning[lang] }),
+        el('p', { className: 'phrase-chinese', lang: 'zh-Hans', text: phrase.zh }),
+        el('p', { className: 'phrase-pinyin', lang: 'zh-Latn', text: phrase.pinyin }),
+        copy, status);
+    })),
+  );
+}
+
 function stepView(categoryId, step, index, onChange) {
   const head = el(
     'div',
@@ -285,13 +322,14 @@ function stepView(categoryId, step, index, onChange) {
   });
   // Outside <summary>: checking completion must not toggle the step details.
   item.append(el('label', { className: 'step-check' }, checkbox));
-  if (!step.details && links.length === 0) {
+  if (!step.details && links.length === 0 && !step.phrases?.length) {
     item.append(head);
     return item;
   }
   head.append(el('span', { className: 'chevron', 'aria-hidden': 'true', text: '›' }));
   const body = el('div', { className: 'step-body' });
   if (step.details) body.append(detailsContent(step.details[lang]));
+  if (step.phrases?.length) body.append(phrasesView(step.phrases));
   if (links.length > 0) {
     body.append(
       el('div', { className: 'links-title', text: UI[lang].links }),

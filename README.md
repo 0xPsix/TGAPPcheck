@@ -18,6 +18,8 @@ Use the checkbox beside a step to mark it complete; uncheck it to undo. Checking
 
 The home screen also shows one combined progress bar with a count under it, for example "6 of 15 steps completed", once every category has loaded. The bar fills from left to right in the accent color of the active design. A card of a partly completed category shows "Resume at step N"; it opens that category and goes straight to the first unfinished step (the step opens and the app scrolls to it). A finished category shows "Completed ✓" on its card and inside the category. The deep link for one step is `#/c/<category id>/<step id>`; the app only scrolls to a step that exists.
 
+A single **Continue** action above the cards opens the first unfinished step across all categories, using category order and then step order from JSON. It says **Start checklist** before any steps are completed, disappears when everything is done, and stays hidden if any category cannot load so it never guesses the wrong next step.
+
 Progress is saved in the browser or Telegram webview's `localStorage`, under `checklist.progress.v1`. It contains only category/step ID pairs. Closing and reopening on the same device and browser/webview normally keeps it; it does not sync across devices or between a browser and Telegram. Clearing webview/site data or moving to another hosting domain can erase or separate saved progress.
 
 If storage is blocked or saving fails, the app shows a warning and tracks completion only in memory until it is closed or reloaded. Unreadable saved data is left untouched and also triggers the warning.
@@ -45,8 +47,9 @@ Step text and category descriptions live in the `content/` folder. You never nee
 | `summary` | step | no | same shape as `title`; one short line under the title |
 | `details` | step | no | `{"en": ["…", "…"], "ru": ["…"]}`, opens when the student taps the step. Each text is a paragraph; a text starting with `- ` is a bullet point. A non-bullet text ending in `:` starts a section heading |
 | `links` | step | no | a list of `{"label": {"en": "…", "ru": "…"}, "url": "https://…"}`; the url must start with `https://` or `http://` |
+| `phrases` | step | no | list of `{"meaning": {"en": "…", "ru": "…"}, "zh": "…", "pinyin": "…"}`; shown in a collapsed Chinese-phrases section |
 
-Any other field name is reported as a mistake, so typos like `tittle` are caught. Texts are plain text: no HTML, no Markdown. Every text needs both `en` and `ru`. If you don't need an optional field, delete it entirely.
+Any other field name is reported as a mistake, so typos like `tittle` are caught. Texts are plain text: no HTML, no Markdown. Translated fields need both `en` and `ru`; a phrase's `zh` and `pinyin` are single texts. If you don't need an optional field, delete it entirely.
 
 Copy a step from `content/steps/first-steps.json` as a starting point. Give it a new unique `id` and replace its English and Russian texts.
 
@@ -62,6 +65,24 @@ Copy a step from `content/steps/first-steps.json` as a starting point. Give it a
 Put `"What to bring:"` in the English details and `"Что взять с собой:"` in the Russian details to start a bordered document-list section. `"Important:"` and `"Важно:"` start an accent-highlighted notes section. Keep the colon.
 
 Following paragraphs and bullets belong to that section until the next non-bullet line ending in `:` (or the end of the details). Other such lines become ordinary section headings. These styles work in both light and dark mode; no new step fields are needed.
+
+### Chinese phrases
+
+Open a step, then expand **Useful Chinese phrases** to see the Chinese, pinyin and its English/Russian meaning. **Copy Chinese** copies only the Chinese sentence. If copying is unavailable, select the Chinese text and copy it manually.
+
+To add a phrase, put a `phrases` list alongside the step's `title`, `summary` and `details`, for example:
+
+```json
+"phrases": [
+  {
+    "meaning": { "en": "I need to see a doctor.", "ru": "Мне нужно к врачу." },
+    "zh": "我需要看医生。",
+    "pinyin": "Wǒ xūyào kàn yīshēng."
+  }
+]
+```
+
+Keep a comma between this field and the preceding or following field. `meaning`, `zh` and `pinyin` must be filled in; an omitted or empty `phrases` list shows no extra section.
 
 ### Edit on github.com
 
@@ -140,7 +161,7 @@ One-time setup (about 10 minutes, no command line):
    - `BOT_TOKEN` — type **Secret** — the token from @BotFather (`/token` if you lost it);
    - `WEBHOOK_SECRET` — type **Secret** — any long random string (run `openssl rand -hex 16` in the project folder and paste the output);
    - `MAIN_APP_URL` — type **Text** — the site address from Settings → Pages, e.g. `https://0xpsix.github.io/TGAPPcheck`.
-3. Open `https://<worker-address>/register` in a browser once. It should show `{"ok":true,…}` — that told Telegram where to deliver updates.
+3. Open `https://<worker-address>/register` in a browser once. It should show `true` — that told Telegram where to deliver updates.
 4. In Telegram send `/start` to the bot. The menu widget appears; its buttons open the Mini App.
 
 Notes:
@@ -148,6 +169,25 @@ Notes:
 - Widget code is frozen per message: after editing categories on github.com, old widgets keep the old menu; a new `/start` sends a fresh one.
 - Test the widget on a phone: widgets work only in the private chat with the bot and cannot be forwarded.
 - If you change `WEBHOOK_SECRET` later, open `/register` again.
+
+### 4. Receive feedback in Telegram
+
+Feedback is handled in the bot, not in the Mini App. `/feedback` sends a reply prompt that explains the reply will be forwarded to the project team with Telegram's sender attribution. Only replies to that prompt are forwarded; ordinary messages are not collected. The bot acknowledges successful delivery, or reports delivery/configuration failure. There is no separate database; the forwarded messages live in the recipient's Telegram chat.
+
+For an existing Worker:
+
+1. In Cloudflare, replace its code with the updated `bot/worker.js` and deploy.
+2. In your own private chat with the bot, send `/chatid`. Copy the ID it returns.
+3. Worker → Settings → Variables and Secrets: add **`FEEDBACK_CHAT_ID`**, type **Text**, with that ID. Save and deploy. Do not change `BOT_TOKEN`, `WEBHOOK_SECRET` or `MAIN_APP_URL`.
+4. Send `/feedback`, then **reply to the bot's prompt**. Confirm that you receive a forwarded copy and an acknowledgement. Messages or attachments with Telegram's forwarding protection cannot be delivered; the bot reports failure.
+5. For discoverability, use @BotFather → `/setcommands` and set:
+   ```text
+   start - Open the checklist
+   help - Show the checklist menu
+   feedback - Report an issue or suggest an improvement
+   ```
+
+`/chatid` is only a setup helper and returns the requesting user's own private-chat ID. You don't need to publish it in the command menu. Updating code and adding `FEEDBACK_CHAT_ID` does not require registering the webhook again.
 
 ## Files
 
@@ -163,6 +203,7 @@ content/steps/first-steps.json  steps of "First Steps"
 scripts/validate-content.js     the content check (npm run validate)
 tests/content.test.js           automatic tests (npm test)
 tests/progress.test.js          persistence, ID stability and storage-failure tests
+tests/feedback.test.js          feedback consent, webhook authorization and delivery-failure tests
 .github/workflows/deploy.yml    on every push: check → test → publish
 bot/worker.js                   Cloudflare Worker: /start menu widget (token stays in Cloudflare)
 ```

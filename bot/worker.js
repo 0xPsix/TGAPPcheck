@@ -1,4 +1,4 @@
-// Cloudflare Worker: answers /start with a static menu widget (Bot API 10.4).
+// Cloudflare Worker: /start menu widget and /feedback replies.
 // No state, no database: every /start builds the widget fresh from the live
 // content files, so edits on github.com appear for every new /start.
 //
@@ -9,6 +9,7 @@
 //   BOT_TOKEN      (Secret)  the bot token from @BotFather
 //   WEBHOOK_SECRET (Secret)  any long random string, e.g. `openssl rand -hex 16`
 //   MAIN_APP_URL   (Text)    the GitHub Pages site, e.g. https://0xpsix.github.io/TGAPPcheck
+//   FEEDBACK_CHAT_ID (Text)  recipient chat ID; use /chatid in the bot to find yours
 
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const BOT_USERNAME_RE = /^[A-Za-z0-9_]{4,32}$/;
@@ -16,13 +17,23 @@ const BOT_USERNAME_RE = /^[A-Za-z0-9_]{4,32}$/;
 const TEXT = {
   en: {
     heading: 'Start with a section:',
-    caption: 'A free checklist for international students. Tap a section to open it — the guide runs inside Telegram.',
+    caption: 'A free checklist for international students. Tap a section to open it — the guide runs inside Telegram. Use /feedback to report an issue.',
     fallbackText: 'The menu could not load just now. Tap to open the checklist:',
+    feedbackPrompt: 'Reply to this message with your feedback. Your reply will be forwarded to the project team with Telegram’s sender attribution. Do not include private documents, passwords or payment details.',
+    feedbackSent: 'Thank you — your feedback has been sent.',
+    feedbackFailed: 'Your feedback could not be delivered. Please reply to the feedback prompt again later.',
+    feedbackUnavailable: 'Feedback is not configured yet. Please try again later.',
+    chatId: 'Your chat ID: {id}. Set this as FEEDBACK_CHAT_ID in Cloudflare to receive feedback here.',
   },
   ru: {
     heading: 'Начните с раздела:',
-    caption: 'Бесплатный чек-лист для иностранных студентов. Нажмите на раздел — справочник откроется внутри Telegram.',
+    caption: 'Бесплатный чек-лист для иностранных студентов. Нажмите на раздел — справочник откроется внутри Telegram. Сообщить об ошибке: /feedback.',
     fallbackText: 'Меню сейчас не загрузилось. Нажмите, чтобы открыть чек-лист:',
+    feedbackPrompt: 'Ответьте на это сообщение и напишите ваш отзыв. Ответ будет переслан команде проекта с указанием отправителя средствами Telegram. Не отправляйте личные документы, пароли или платёжные данные.',
+    feedbackSent: 'Спасибо — ваш отзыв отправлен.',
+    feedbackFailed: 'Не удалось доставить отзыв. Попробуйте позже ещё раз ответить на сообщение с запросом отзыва.',
+    feedbackUnavailable: 'Приём отзывов пока не настроен. Попробуйте позже.',
+    chatId: 'ID вашего чата: {id}. Укажите его в FEEDBACK_CHAT_ID в Cloudflare, чтобы получать отзывы здесь.',
   },
 };
 
@@ -115,10 +126,48 @@ async function sendMenu(env, chatId, languageCode) {
 
 async function handleUpdate(update, env) {
   const message = update.message;
-  if (!message || message.chat.type !== 'private') return;
+  if (!message || message.chat.type !== 'private' || message.from?.is_bot) return;
+  const lang = pickLang(message.from && message.from.language_code);
   const text = typeof message.text === 'string' ? message.text.trim() : '';
-  if (text.startsWith('/start') || text.startsWith('/help')) {
+  const command = /^\/(start|help|feedback|chatid)(?:@[A-Za-z0-9_]+)?(?:\s|$)/.exec(text)?.[1];
+  const recipient = String(env.FEEDBACK_CHAT_ID || '').trim();
+  const configured = /^-?\d+$/.test(recipient);
+  if (command === 'start' || command === 'help') {
     await sendMenu(env, message.chat.id, message.from && message.from.language_code);
+  } else if (command === 'chatid') {
+    // Setup helper: reveals only the ID of the sender's own private chat.
+    await tgApi(env, 'sendMessage', {
+      chat_id: message.chat.id,
+      text: TEXT[lang].chatId.replace('{id}', String(message.chat.id)),
+    });
+  } else if (command === 'feedback') {
+    await tgApi(env, 'sendMessage', {
+      chat_id: message.chat.id,
+      text: configured ? TEXT[lang].feedbackPrompt : TEXT[lang].feedbackUnavailable,
+      ...(configured ? { reply_markup: { force_reply: true } } : {}),
+    });
+  } else if (!text.startsWith('/')) {
+    const reply = message.reply_to_message;
+    const isFeedbackPrompt = reply?.from?.is_bot &&
+      Object.values(TEXT).some((translation) => reply.text === translation.feedbackPrompt);
+    if (!isFeedbackPrompt) return;
+    const botUsername = await getBotUsername(env);
+    if (reply.from.username?.toLowerCase() !== botUsername.toLowerCase()) return;
+    if (!configured) {
+      await tgApi(env, 'sendMessage', { chat_id: message.chat.id, text: TEXT[lang].feedbackUnavailable });
+      return;
+    }
+    try {
+      await tgApi(env, 'forwardMessage', {
+        chat_id: recipient,
+        from_chat_id: message.chat.id,
+        message_id: message.message_id,
+      });
+    } catch {
+      await tgApi(env, 'sendMessage', { chat_id: message.chat.id, text: TEXT[lang].feedbackFailed });
+      return;
+    }
+    await tgApi(env, 'sendMessage', { chat_id: message.chat.id, text: TEXT[lang].feedbackSent });
   }
 }
 

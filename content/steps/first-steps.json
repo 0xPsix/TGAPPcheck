@@ -45,7 +45,19 @@
           "Сохраните бланк регистрации — он понадобится для вида на жительство и, возможно, для банка.",
           "При каждом переезде регистрацию нужно делать заново."
         ]
-      }
+      },
+      "phrases": [
+        {
+          "meaning": { "en": "I'd like to register my accommodation.", "ru": "Я хочу оформить регистрацию по месту проживания." },
+          "zh": "我想办理住宿登记。",
+          "pinyin": "Wǒ xiǎng bànlǐ zhùsù dēngjì."
+        },
+        {
+          "meaning": { "en": "Which documents do I need?", "ru": "Какие документы нужны?" },
+          "zh": "请问需要哪些材料？",
+          "pinyin": "Qǐngwèn xūyào nǎxiē cáiliào?"
+        }
+      ]
     },
     {
       "id": "second-step",
@@ -140,7 +152,19 @@
           "- Студенческий билет или справка из университета",
           "- Бланк временной регистрации (может понадобиться)"
         ]
-      }
+      },
+      "phrases": [
+        {
+          "meaning": { "en": "I'd like to open a bank account.", "ru": "Я хочу открыть банковский счёт." },
+          "zh": "我想开一个银行账户。",
+          "pinyin": "Wǒ xiǎng kāi yí ge yínháng zhànghù."
+        },
+        {
+          "meaning": { "en": "Can this card be linked to Alipay and WeChat Pay?", "ru": "Можно привязать эту карту к Alipay и WeChat Pay?" },
+          "zh": "这张卡可以绑定支付宝和微信支付吗？",
+          "pinyin": "Zhè zhāng kǎ kěyǐ bǎngdìng Zhīfùbǎo hé Wēixìn Zhīfù ma?"
+        }
+      ]
     },
     {
       "id": "medical-examination",
@@ -202,7 +226,19 @@
           "- Узнайте, какие больницы работают по страховке и как получить компенсацию расходов.",
           "- Сохраните полис и номер горячей линии страховой компании."
         ]
-      }
+      },
+      "phrases": [
+        {
+          "meaning": { "en": "I need to see a doctor.", "ru": "Мне нужно к врачу." },
+          "zh": "我需要看医生。",
+          "pinyin": "Wǒ xūyào kàn yīshēng."
+        },
+        {
+          "meaning": { "en": "How do I register for a medical appointment?", "ru": "Как записаться на приём?" },
+          "zh": "请问怎么挂号？",
+          "pinyin": "Qǐngwèn zěnme guàhào?"
+        }
+      ]
     },
     {
       "id": "residence-permit",

@@ -90,6 +90,16 @@ test('category descriptions are optional, but require both languages when presen
   }
 });
 
+test('phrases need Chinese text, pinyin and a meaning in both languages', () => {
+  const phrase = { zh: '谢谢。', pinyin: 'Xièxie.', meaning: text('Thank you.', 'Спасибо.') };
+  const step = { id: 'phrases', title: text('Phrases', 'Фразы'), phrases: [phrase] };
+  assert.deepEqual(validateSteps({ steps: [step] }), []);
+  for (const phrases of [null, [null], [{ ...phrase, zh: '' }], [{ ...phrase, pinyin: ' ' }],
+    [{ ...phrase, meaning: { en: 'Thank you.' } }], [{ ...phrase, pinyn: 'Typo' }]]) {
+    assert.ok(validateSteps({ steps: [{ ...step, phrases }] }).some((message) => message.includes('"phrases"')));
+  }
+});
+
 test('JSON errors point to a line', () => {
   const source = '{\n  "steps": [],\n}';
   let parseError;

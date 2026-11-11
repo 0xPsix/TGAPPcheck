@@ -617,3 +617,95 @@ details[open] .step-body {
   font-size: 14px;
 }
 
+
+.continue-action:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--button);
+  color: var(--button-text);
+  text-decoration: none;
+}
+
+.continue-label {
+  font-weight: 700;
+}
+
+.continue-next {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.phrases {
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.phrases > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 0;
+  font-weight: 600;
+}
+
+.phrases-indicator {
+  flex: none;
+  color: var(--link);
+  font-size: 22px;
+}
+
+.phrases[open] > summary .phrases-indicator {
+  transform: rotate(45deg);
+}
+
+.step-body .phrase-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.step-body .phrase + .phrase {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.step-body .phrase p {
+  margin: 0 0 6px;
+}
+
+.phrase-chinese {
+  font-size: 22px;
+  line-height: 1.5;
+  user-select: text;
+}
+
+.phrase-pinyin {
+  color: var(--hint);
+  font-size: 14px;
+}
+
+.phrase-copy {
+  min-height: 44px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--link);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.phrase-copy-status {
+  display: block;
+  color: var(--hint);
+  font-size: 13px;
+}

@@ -7,7 +7,7 @@ const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const URL_RE = /^https?:\/\/\S+$/;
 
 const CATEGORY_FIELDS = ['id', 'title', 'description'];
-const STEP_FIELDS = ['id', 'title', 'summary', 'details', 'links'];
+const STEP_FIELDS = ['id', 'title', 'summary', 'details', 'links', 'phrases'];
 const LINK_FIELDS = ['label', 'url'];
 
 function isObject(value) {
@@ -84,6 +84,25 @@ function checkLinks(links, where, errors) {
   });
 }
 
+function checkPhrases(phrases, where, errors) {
+  if (!Array.isArray(phrases)) {
+    errors.push(`${where}: "phrases" must be a list`);
+    return;
+  }
+  phrases.forEach((phrase, index) => {
+    const phraseWhere = `${where}: "phrases" item ${index + 1}`;
+    if (!isObject(phrase)) {
+      errors.push(`${phraseWhere}: must be an object`);
+      return;
+    }
+    checkUnknownFields(phrase, ['meaning', 'zh', 'pinyin'], phraseWhere, errors);
+    checkText(phrase.meaning, 'meaning', phraseWhere, errors);
+    for (const field of ['zh', 'pinyin']) {
+      if (!isText(phrase[field])) errors.push(`${phraseWhere}: "${field}" must be non-empty text`);
+    }
+  });
+}
+
 function itemLabel(kind, index, item) {
   const hasValidId = isObject(item) && typeof item.id === 'string' && ID_RE.test(item.id);
   return `${kind} ${index + 1}${hasValidId ? ` (id "${item.id}")` : ''}`;
@@ -136,6 +155,7 @@ export function validateSteps(data) {
     if ('summary' in step) checkText(step.summary, 'summary', where, errors);
     if ('details' in step) checkTextLists(step.details, 'details', where, errors);
     if ('links' in step) checkLinks(step.links, where, errors);
+    if ('phrases' in step) checkPhrases(step.phrases, where, errors);
   });
 }
 
