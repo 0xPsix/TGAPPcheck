@@ -426,4 +426,14 @@ if (inTelegram) {
   tg.ready();
   tg.expand();
 }
+// Widget deep link: a t.me/<bot>?startapp=cat-<id> launch opens that category.
+// Only from a home route: never overrides an explicit #/c/… in the address.
+const startParam =
+  (inTelegram && tg.initDataUnsafe && tg.initDataUnsafe.start_param) ||
+  new URLSearchParams(location.search).get('tgWebAppStartParam') ||
+  '';
+const deepLink = /^cat-([a-z0-9]+(?:-[a-z0-9]+)*)$/.exec(startParam);
+if (deepLink && parseRoute(location.hash).name === 'home') {
+  location.hash = `#/c/${deepLink[1]}`;
+}
 render();

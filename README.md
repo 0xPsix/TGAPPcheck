@@ -119,6 +119,26 @@ If something goes wrong:
    - `/setdescription`: a short text shown in the empty bot chat, e.g. "Tap Open to see the checklist".
 4. Open `https://t.me/<your_bot_username>?startapp` on your phone. The app should open.
 
+### 3. Bot backend (Cloudflare Worker)
+
+`bot/worker.js` is a small always-on function that replies to `/start` with a **menu widget** (Bot API 10.4): an interactive category menu drawn inside the message bubble, in the user's language, built fresh from the live `content/categories.json` on every `/start`. Each button opens the Mini App straight at that section. If the widget cannot be built, the bot sends a plain fallback message, so `/start` is never silent.
+
+One-time setup (about 10 minutes, no command line):
+
+1. Create a free account at dash.cloudflare.com → **Workers & Pages** → **Create** → **Worker** → name it (e.g. `tgappcheck-bot`) → **Edit code** → paste the whole `bot/worker.js` → **Deploy**. Note the address: `https://tgappcheck-bot.<your-subdomain>.workers.dev`.
+2. In the Worker: **Settings → Variables** → add:
+   - `BOT_TOKEN` — type **Secret** — the token from @BotFather (`/token` if you lost it);
+   - `WEBHOOK_SECRET` — type **Secret** — any long random string (run `openssl rand -hex 16` in the project folder and paste the output);
+   - `MAIN_APP_URL` — type **Text** — the site address from Settings → Pages, e.g. `https://0xpsix.github.io/TGAPPcheck`.
+3. Open `https://<worker-address>/register` in a browser once. It should show `{"ok":true,…}` — that told Telegram where to deliver updates.
+4. In Telegram send `/start` to the bot. The menu widget appears; its buttons open the Mini App.
+
+Notes:
+- The token lives only in Cloudflare as an encrypted secret, never in this repo.
+- Widget code is frozen per message: after editing categories on github.com, old widgets keep the old menu; a new `/start` sends a fresh one.
+- Test the widget on a phone: widgets work only in the private chat with the bot and cannot be forwarded.
+- If you change `WEBHOOK_SECRET` later, open `/register` again.
+
 ## Files
 
 ```
@@ -134,6 +154,7 @@ scripts/validate-content.js     the content check (npm run validate)
 tests/content.test.js           automatic tests (npm test)
 tests/progress.test.js          persistence, ID stability and storage-failure tests
 .github/workflows/deploy.yml    on every push: check → test → publish
+bot/worker.js                   Cloudflare Worker: /start menu widget (token stays in Cloudflare)
 ```
 
 There are no secrets in this repo, and the app never needs the bot token. Never commit `.env` files or tokens: the repo is public.
