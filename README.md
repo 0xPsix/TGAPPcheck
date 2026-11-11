@@ -1,8 +1,16 @@
 # Checklist for students in China (Telegram Mini App)
 
-A free Telegram Mini App for foreign students who are about to arrive, or have just arrived, in Shanghai. It shows a short, ordered list of steps, in English and Russian (switch with the EN / RU buttons). Students can track completion on their device without accounts or uploading personal information.
+A free Telegram Mini App for foreign students who are about to arrive, or have just arrived, in Shanghai. It shows a short, ordered list of steps, in English and Russian (choose a language using the globe and language code at the top right). Students can track completion on their device without accounts or uploading personal information.
 
 Site: `https://0xpsix.github.io/TGAPPcheck/`. Confirm the exact address in your repo → Settings → Pages after the first deploy.
+
+## Choose a language
+
+Tap the borderless globe/language button beside the title to open the language picker. It lists languages by their native names and marks the selected one. Choosing an option closes the menu and saves your preference. Tap outside or press Escape to dismiss it without changing languages.
+
+Keyboard support: Enter/Space opens the picker; arrow keys, Home and End move through options; Enter/Space selects; Escape returns focus to the button. Tab closes the menu and continues to the next control. The button uses a keyboard-only underline instead of a focus outline.
+
+The menu is generated from `LANGS` in `js/validate.js`, with native labels in `LANGUAGE_NAMES` in `js/app.js`. Adding another language still requires its UI/content translations and language-detection support; no additional header buttons or HTML options are needed.
 
 ## Track progress
 
@@ -89,7 +97,7 @@ The preview server listens only on your own computer (`127.0.0.1`). Stop it with
 
 ### Temporary design preview
 
-Tap **Design** / **Дизайн** beside EN/RU to preview the red-and-white theme. Tap it again to return to the original Telegram theme. The toggle keeps your current page and expanded steps; it does not change content. Reloading or reopening the app resets to the original theme.
+Tap **Design** / **Дизайн** below the title to preview the red-and-white theme. Tap it again to return to the original Telegram theme. The toggle keeps your current page and expanded steps; it does not change content. Reloading or reopening the app resets to the original theme.
 
 ## One-time setup
 
@@ -142,7 +150,7 @@ Notes:
 ## Files
 
 ```
-index.html                      app page: header with title and EN/RU switch
+index.html                      app header with title, top-right language picker and Design button
 css/app.css                     styles; colors follow the Telegram theme
 js/app.js                       screens, navigation, loading content
 js/i18n.js                      interface texts (EN/RU) and language choice

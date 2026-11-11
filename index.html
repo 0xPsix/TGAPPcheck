@@ -11,13 +11,21 @@
 <body>
   <header class="topbar">
     <h1 id="app-title">Checklist for students in China</h1>
-    <div class="header-controls">
-      <button type="button" id="design-toggle" aria-pressed="false">Design</button>
-      <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
-        <button type="button" data-lang="ru" aria-pressed="false">RU</button>
-      </div>
+    <div class="language-picker">
+      <button type="button" id="language-toggle" aria-label="Language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
+          <path d="M3 12h18"></path>
+        </svg>
+        <span id="language-code">EN</span>
+        <svg class="language-chevron" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="m3 4.5 3 3 3-3"></path>
+        </svg>
+      </button>
+      <ul id="language-menu" role="menu" aria-label="Language" hidden></ul>
     </div>
+    <button type="button" id="design-toggle" aria-pressed="false">Design</button>
   </header>
   <main id="screen"></main>
 </body>

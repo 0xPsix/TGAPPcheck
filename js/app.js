@@ -1,5 +1,5 @@
 import { UI, detectLang, saveLang } from './i18n.js';
-import { validateCategories, validateSteps, describeJsonError } from './validate.js';
+import { LANGS, validateCategories, validateSteps, describeJsonError } from './validate.js';
 import { createProgressStore } from './progress.js';
 
 const tg = window.Telegram?.WebApp;
@@ -13,6 +13,10 @@ const progress = createProgressStore();
 let lang = detectLang();
 let renderToken = 0;
 let lastStepScroll = null; // route key of the last step the app scrolled to
+const languagePicker = document.querySelector('.language-picker');
+const languageToggle = document.getElementById('language-toggle');
+const languageMenu = document.getElementById('language-menu');
+const LANGUAGE_NAMES = { en: 'English', ru: 'Русский' };
 
 class ContentError extends Error {
   constructor(messages) {
@@ -387,18 +391,83 @@ async function render() {
   }
 }
 
+function setLanguageMenuOpen(open, returnFocus = false) {
+  languageMenu.hidden = !open;
+  languageToggle.setAttribute('aria-expanded', String(open));
+  if (open) languageMenu.querySelector(`[data-lang="${lang}"]`).focus();
+  else if (returnFocus) languageToggle.focus();
+}
+
 function applyLang() {
   document.documentElement.lang = lang;
   document.title = UI[lang].appTitle;
   document.getElementById('app-title').textContent = UI[lang].appTitle;
   document.getElementById('design-toggle').textContent = UI[lang].design;
-  for (const button of document.querySelectorAll('[data-lang]')) {
-    button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
+  document.getElementById('language-code').textContent = lang.toUpperCase();
+  languageToggle.setAttribute('aria-label', `${UI[lang].language}: ${LANGUAGE_NAMES[lang]}`);
+  languageMenu.setAttribute('aria-label', UI[lang].language);
+  for (const button of languageMenu.querySelectorAll('[data-lang]')) {
+    button.setAttribute('aria-checked', String(button.dataset.lang === lang));
   }
 }
 
 // ---------- startup ----------
 
+for (const code of LANGS) {
+  const option = el('button', {
+    type: 'button',
+    role: 'menuitemradio',
+    'aria-checked': 'false',
+    'data-lang': code,
+    lang: code,
+    tabindex: '-1',
+    text: LANGUAGE_NAMES[code],
+  });
+  option.addEventListener('click', () => {
+    if (code !== lang) {
+      lang = code;
+      saveLang(lang);
+      applyLang();
+      render();
+    }
+    setLanguageMenuOpen(false, true);
+  });
+  languageMenu.append(el('li', { role: 'none' }, option));
+}
+languageToggle.addEventListener('click', () => setLanguageMenuOpen(languageMenu.hidden));
+languageToggle.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    event.preventDefault();
+    setLanguageMenuOpen(true);
+  }
+});
+languagePicker.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !languageMenu.hidden) {
+    event.preventDefault();
+    setLanguageMenuOpen(false, true);
+  } else if (event.key === 'Tab') {
+    setLanguageMenuOpen(false, !languageMenu.hidden);
+  }
+});
+languageMenu.addEventListener('keydown', (event) => {
+  const options = [...languageMenu.querySelectorAll('[data-lang]')];
+  const index = options.indexOf(document.activeElement);
+  let next;
+  if (event.key === 'ArrowDown') next = (index + 1) % options.length;
+  else if (event.key === 'ArrowUp') next = (index - 1 + options.length) % options.length;
+  else if (event.key === 'Home') next = 0;
+  else if (event.key === 'End') next = options.length - 1;
+  if (next !== undefined) {
+    event.preventDefault();
+    options[next].focus();
+  }
+});
+document.addEventListener('click', (event) => {
+  if (!languagePicker.contains(event.target)) setLanguageMenuOpen(false);
+});
+languagePicker.addEventListener('focusout', (event) => {
+  if (!languagePicker.contains(event.relatedTarget)) setLanguageMenuOpen(false);
+});
 applyLang();
 // Temporary preview: CSS-only switch preserves navigation and expanded steps.
 document.getElementById('design-toggle').addEventListener('click', (event) => {
@@ -407,15 +476,6 @@ document.getElementById('design-toggle').addEventListener('click', (event) => {
   else delete document.documentElement.dataset.design;
   event.currentTarget.setAttribute('aria-pressed', String(enabled));
 });
-for (const button of document.querySelectorAll('[data-lang]')) {
-  button.addEventListener('click', () => {
-    if (button.dataset.lang === lang) return;
-    lang = button.dataset.lang;
-    saveLang(lang);
-    applyLang();
-    render();
-  });
-}
 if (tgApi) {
   tg.BackButton.onClick(() => {
     location.hash = '#/';
