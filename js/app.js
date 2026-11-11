@@ -17,6 +17,15 @@ const languagePicker = document.querySelector('.language-picker');
 const languageToggle = document.getElementById('language-toggle');
 const languageMenu = document.getElementById('language-menu');
 const LANGUAGE_NAMES = { en: 'English', ru: 'Русский' };
+const themeToggle = document.getElementById('theme-toggle');
+const systemDarkTheme = window.matchMedia('(prefers-color-scheme: dark)');
+let selectedTheme = null;
+try {
+  const storedTheme = localStorage.getItem('checklist.theme');
+  if (storedTheme === 'light' || storedTheme === 'dark') selectedTheme = storedTheme;
+} catch {
+  // Theme switching still works for this session when storage is unavailable.
+}
 
 class ContentError extends Error {
   constructor(messages) {
@@ -391,6 +400,13 @@ async function render() {
   }
 }
 
+function applyTheme() {
+  const automaticTheme = inTelegram ? tg.colorScheme : (systemDarkTheme.matches ? 'dark' : 'light');
+  const theme = selectedTheme || automaticTheme;
+  document.documentElement.dataset.theme = theme;
+  themeToggle.setAttribute('aria-checked', String(theme === 'dark'));
+}
+
 function setLanguageMenuOpen(open, returnFocus = false) {
   languageMenu.hidden = !open;
   languageToggle.setAttribute('aria-expanded', String(open));
@@ -402,7 +418,7 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.title = UI[lang].appTitle;
   document.getElementById('app-title').textContent = UI[lang].appTitle;
-  document.getElementById('design-toggle').textContent = UI[lang].design;
+  themeToggle.setAttribute('aria-label', UI[lang].darkMode);
   document.getElementById('language-code').textContent = lang.toUpperCase();
   languageToggle.setAttribute('aria-label', `${UI[lang].language}: ${LANGUAGE_NAMES[lang]}`);
   languageMenu.setAttribute('aria-label', UI[lang].language);
@@ -469,13 +485,18 @@ languagePicker.addEventListener('focusout', (event) => {
   if (!languagePicker.contains(event.relatedTarget)) setLanguageMenuOpen(false);
 });
 applyLang();
-// Temporary preview: CSS-only switch preserves navigation and expanded steps.
-document.getElementById('design-toggle').addEventListener('click', (event) => {
-  const enabled = document.documentElement.dataset.design !== 'red';
-  if (enabled) document.documentElement.dataset.design = 'red';
-  else delete document.documentElement.dataset.design;
-  event.currentTarget.setAttribute('aria-pressed', String(enabled));
+applyTheme();
+themeToggle.addEventListener('click', () => {
+  selectedTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  try {
+    localStorage.setItem('checklist.theme', selectedTheme);
+  } catch {
+    // Keep the choice in memory for this session.
+  }
+  applyTheme();
 });
+systemDarkTheme.addEventListener('change', applyTheme);
+if (inTelegram) tg.onEvent('themeChanged', applyTheme);
 if (tgApi) {
   tg.BackButton.onClick(() => {
     location.hash = '#/';

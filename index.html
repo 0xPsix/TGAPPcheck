@@ -11,21 +11,34 @@
 <body>
   <header class="topbar">
     <h1 id="app-title">Checklist for students in China</h1>
-    <div class="language-picker">
-      <button type="button" id="language-toggle" aria-label="Language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"></circle>
-          <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
-          <path d="M3 12h18"></path>
-        </svg>
-        <span id="language-code">EN</span>
-        <svg class="language-chevron" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <path d="m3 4.5 3 3 3-3"></path>
-        </svg>
+    <div class="header-controls">
+      <button type="button" id="theme-toggle" role="switch" aria-checked="false" aria-label="Dark mode">
+        <span class="theme-track" aria-hidden="true">
+          <span class="theme-thumb"></span>
+          <svg class="theme-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="12" cy="12" r="3.5"></circle>
+            <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"></path>
+          </svg>
+          <svg class="theme-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M20 14a8.5 8.5 0 0 1-10-10 8.5 8.5 0 1 0 10 10Z"></path>
+          </svg>
+        </span>
       </button>
-      <ul id="language-menu" role="menu" aria-label="Language" hidden></ul>
+      <div class="language-picker">
+        <button type="button" id="language-toggle" aria-label="Language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
+            <path d="M3 12h18"></path>
+          </svg>
+          <span id="language-code">EN</span>
+          <svg class="language-chevron" viewBox="0 0 12 12" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="m3 4.5 3 3 3-3"></path>
+          </svg>
+        </button>
+        <ul id="language-menu" role="menu" aria-label="Language" hidden></ul>
+      </div>
     </div>
-    <button type="button" id="design-toggle" aria-pressed="false">Design</button>
   </header>
   <main id="screen"></main>
 </body>

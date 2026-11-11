@@ -61,7 +61,7 @@ Copy a step from `content/steps/first-steps.json` as a starting point. Give it a
 
 Put `"What to bring:"` in the English details and `"Что взять с собой:"` in the Russian details to start a bordered document-list section. `"Important:"` and `"Важно:"` start an accent-highlighted notes section. Keep the colon.
 
-Following paragraphs and bullets belong to that section until the next non-bullet line ending in `:` (or the end of the details). Other such lines become ordinary section headings. These styles work in both the original theme and the red-and-white preview; no new step fields are needed.
+Following paragraphs and bullets belong to that section until the next non-bullet line ending in `:` (or the end of the details). Other such lines become ordinary section headings. These styles work in both light and dark mode; no new step fields are needed.
 
 ### Edit on github.com
 
@@ -95,9 +95,11 @@ python3 -m http.server 8000 --bind 127.0.0.1       # preview at http://127.0.0.1
 
 The preview server listens only on your own computer (`127.0.0.1`). Stop it with Ctrl+C when you are done.
 
-### Temporary design preview
+### Light and dark theme
 
-Tap **Design** / **Дизайн** below the title to preview the red-and-white theme. Tap it again to return to the original Telegram theme. The toggle keeps your current page and expanded steps; it does not change content. Reloading or reopening the app resets to the original theme.
+The sun/moon switch sits immediately left of the language picker, aligned with the title. Sun is light mode; moon is dark mode. Both use the same red design. Switching changes colours without resetting the current screen, expanded steps or completion.
+
+Before a manual choice, the app follows Telegram's light/dark setting (or the system theme in a normal browser), including changes while open. Your manual choice is saved as `checklist.theme` in localStorage and overrides automatic changes after reopening. When storage is blocked, the choice lasts only for the current session. The switch has an English/Russian screen-reader label and works with Enter or Space.
 
 ## One-time setup
 
@@ -150,8 +152,8 @@ Notes:
 ## Files
 
 ```
-index.html                      app header with title, top-right language picker and Design button
-css/app.css                     styles; colors follow the Telegram theme
+index.html                      app header with title, sun/moon switch and language picker
+css/app.css                     shared red design with light and dark palettes
 js/app.js                       screens, navigation, loading content
 js/i18n.js                      interface texts (EN/RU) and language choice
 js/validate.js                  content rules (used by the app and by the check)
