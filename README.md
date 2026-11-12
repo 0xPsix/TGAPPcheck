@@ -14,9 +14,9 @@ The menu is generated from `LANGS` in `js/validate.js`, with native labels in `L
 
 ## Search steps
 
-Use the search field on the home screen to find steps across all categories. It searches titles, summaries and full detail text in the selected language, ignoring letter case. For multiple words, every word must appear somewhere in the step. Results stay in category/step order and show the category name; tap one to open that exact step.
+Search starts collapsed. Tap the borderless magnifying-glass button beside the home-screen progress indicator, just above Continue, to reveal and focus the field. It searches step titles, summaries and full detail text across all categories in the selected language, ignoring letter case. For multiple words, every word must appear somewhere in the step. Results stay in category/step order and show the category name; tap one to open that exact step.
 
-Tap **×** or press Escape in the field to clear search and return to the normal home screen. The query is kept when returning from a step or switching languages, but is not saved after reloading/closing the app. Search runs locally; queries are not sent to a backend. Adding or editing content JSON needs no separate search index.
+Tap **×** to clear the query while keeping the field open. Tap the magnifying glass again, or press Escape in the search field, to close search, clear its results and return focus to the button. Open search and its query are kept when returning from a step or switching languages, but are not saved after reloading/closing the app. Search runs locally; queries are not sent to a backend. Adding or editing content JSON needs no separate search index.
 
 If a category cannot load, search shows results from the available categories with an incomplete-results warning and **Try again**. Retrying keeps the query.
 

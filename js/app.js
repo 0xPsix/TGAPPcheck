@@ -14,6 +14,7 @@ let lang = detectLang();
 let renderToken = 0;
 let lastStepScroll = null; // route key of the last step the app scrolled to
 let searchQuery = ''; // retained when returning from a step, never saved to storage
+let searchOpen = false;
 const languagePicker = document.querySelector('.language-picker');
 const languageToggle = document.getElementById('language-toggle');
 const languageMenu = document.getElementById('language-menu');
@@ -198,8 +199,17 @@ function homeView(categories) {
     'aria-label': UI[lang].clearSearch,
     text: '×',
   });
-  const search = el('form', { className: 'search', role: 'search' },
+  const search = el('form', { id: 'step-search', className: 'search', role: 'search' },
     el('div', { className: 'search-field' }, input, clear));
+  search.hidden = !searchOpen;
+  const searchToggle = el('button', {
+    type: 'button',
+    className: 'search-toggle',
+    'aria-label': UI[lang].searchSteps,
+    title: UI[lang].searchSteps,
+    'aria-expanded': String(searchOpen),
+    'aria-controls': 'step-search',
+  }, el('span', { className: 'search-icon', 'aria-hidden': 'true' }));
   const status = el('p', { className: 'search-status', role: 'status' });
   const retry = el('button', { type: 'button', className: 'retry', text: UI[lang].retry });
   retry.addEventListener('click', () => render());
@@ -245,6 +255,19 @@ function homeView(categories) {
     searchQuery = input.value;
     updateSearch();
   }
+  function setSearchOpen(open) {
+    searchOpen = open;
+    search.hidden = !open;
+    searchToggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      input.focus();
+    } else {
+      input.value = '';
+      changeQuery();
+      searchToggle.focus();
+    }
+  }
+  searchToggle.addEventListener('click', () => setSearchOpen(!searchOpen));
   input.addEventListener('input', changeQuery);
   search.addEventListener('submit', (event) => event.preventDefault());
   clear.addEventListener('click', () => {
@@ -252,11 +275,10 @@ function homeView(categories) {
     changeQuery();
     input.focus();
   });
-  input.addEventListener('keydown', (event) => {
+  search.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') {
       event.preventDefault();
-      input.value = '';
-      changeQuery();
+      setSearchOpen(false);
     }
   });
   fragment.append(
@@ -264,12 +286,12 @@ function homeView(categories) {
       el('h2', { text: UI[lang].introTitle }),
       el('p', { text: UI[lang].introText }),
     ),
+    el('div', { className: 'home-tools' }, total, searchToggle),
     search,
     searchResults,
     browse,
   );
   browse.append(
-    total,
     continueAction,
     el('ul', { className: 'card-list' },
       ...categories.map((category) =>
