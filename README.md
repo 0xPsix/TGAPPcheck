@@ -12,6 +12,14 @@ Keyboard support: Enter/Space opens the picker; arrow keys, Home and End move th
 
 The menu is generated from `LANGS` in `js/validate.js`, with native labels in `LANGUAGE_NAMES` in `js/app.js`. Adding another language still requires its UI/content translations and language-detection support; no additional header buttons or HTML options are needed.
 
+## Search steps
+
+Use the search field on the home screen to find steps across all categories. It searches titles, summaries and full detail text in the selected language, ignoring letter case. For multiple words, every word must appear somewhere in the step. Results stay in category/step order and show the category name; tap one to open that exact step.
+
+Tap **×** or press Escape in the field to clear search and return to the normal home screen. The query is kept when returning from a step or switching languages, but is not saved after reloading/closing the app. Search runs locally; queries are not sent to a backend. Adding or editing content JSON needs no separate search index.
+
+If a category cannot load, search shows results from the available categories with an incomplete-results warning and **Try again**. Retrying keeps the query.
+
 ## Track progress
 
 Use the checkbox beside a step to mark it complete; uncheck it to undo. Checking does not open or close the step text. Each category shows its completed count on the home card and inside the category. Completed steps remain readable and in their original order.

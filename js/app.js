@@ -13,6 +13,7 @@ const progress = createProgressStore();
 let lang = detectLang();
 let renderToken = 0;
 let lastStepScroll = null; // route key of the last step the app scrolled to
+let searchQuery = ''; // retained when returning from a step, never saved to storage
 const languagePicker = document.querySelector('.language-picker');
 const languageToggle = document.getElementById('language-toggle');
 const languageMenu = document.getElementById('language-menu');
@@ -179,11 +180,95 @@ function homeView(categories) {
     label,
   );
   const continueAction = el('a', { className: 'continue-action', hidden: true });
+  const browse = el('div', { className: 'home-browse' });
+  const input = el('input', {
+    type: 'search',
+    name: 'q',
+    value: searchQuery,
+    placeholder: UI[lang].searchSteps,
+    'aria-label': UI[lang].searchSteps,
+    autocomplete: 'off',
+    autocapitalize: 'none',
+    spellcheck: 'false',
+    enterkeyhint: 'search',
+  });
+  const clear = el('button', {
+    type: 'button',
+    className: 'search-clear',
+    'aria-label': UI[lang].clearSearch,
+    text: '×',
+  });
+  const search = el('form', { className: 'search', role: 'search' },
+    el('div', { className: 'search-field' }, input, clear));
+  const status = el('p', { className: 'search-status', role: 'status' });
+  const retry = el('button', { type: 'button', className: 'retry', text: UI[lang].retry });
+  retry.addEventListener('click', () => render());
+  const warning = el('div', { className: 'search-warning', hidden: true },
+    el('p', { text: UI[lang].searchIncomplete }), retry);
+  const matchesList = el('ul', { className: 'card-list' });
+  const searchResults = el('section', { 'aria-label': UI[lang].searchResults, hidden: true },
+    status, warning, matchesList);
+  let entries = null;
+  let unavailable = false;
+
+  function updateSearch() {
+    const query = input.value.trim().toLocaleLowerCase(lang);
+    clear.hidden = input.value.length === 0;
+    browse.hidden = query.length > 0;
+    searchResults.hidden = query.length === 0;
+    if (!query) {
+      matchesList.replaceChildren();
+      return;
+    }
+    if (entries === null) {
+      status.textContent = UI[lang].loading;
+      return;
+    }
+    const words = query.split(/\s+/);
+    const matches = entries.filter((entry) => words.every((word) => entry.text.includes(word)));
+    warning.hidden = !unavailable;
+    status.textContent = matches.length > 0 || unavailable
+      ? UI[lang].searchCount.replace('{count}', String(matches.length))
+      : UI[lang].searchEmpty;
+    matchesList.replaceChildren(...matches.map(({ category, step }) =>
+      el('li', {}, el('a', { className: 'card', href: `#/c/${category.id}/${step.id}` },
+        el('div', { className: 'card-copy' },
+          el('span', { className: 'search-category', text: category.title[lang] }),
+          el('span', { className: 'card-title', text: step.title[lang] }),
+          step.summary ? el('span', { className: 'card-description', text: step.summary[lang] }) : null,
+        ),
+      )),
+    ));
+  }
+
+  function changeQuery() {
+    searchQuery = input.value;
+    updateSearch();
+  }
+  input.addEventListener('input', changeQuery);
+  search.addEventListener('submit', (event) => event.preventDefault());
+  clear.addEventListener('click', () => {
+    input.value = '';
+    changeQuery();
+    input.focus();
+  });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      input.value = '';
+      changeQuery();
+    }
+  });
   fragment.append(
     el('section', { className: 'intro' },
       el('h2', { text: UI[lang].introTitle }),
       el('p', { text: UI[lang].introText }),
     ),
+    search,
+    searchResults,
+    browse,
+  );
+  browse.append(
     total,
     continueAction,
     el('ul', { className: 'card-list' },
@@ -206,6 +291,14 @@ function homeView(categories) {
       () => null, // one unavailable category hides the line; its card shows why
     ),
   )).then((results) => {
+    unavailable = results.includes(null);
+    entries = results.flatMap((part, index) => part ? part.steps.map((step) => ({
+      category: categories[index],
+      step,
+      text: [step.title[lang], step.summary?.[lang] || '', ...(step.details?.[lang] || [])]
+        .join('\n').toLocaleLowerCase(lang),
+    })) : []);
+    updateSearch();
     if (results.includes(null)) return;
     const done = results.reduce((sum, part) => sum + part.done, 0);
     const count = results.reduce((sum, part) => sum + part.total, 0);
@@ -228,6 +321,7 @@ function homeView(categories) {
       continueAction.hidden = false;
     }
   });
+  updateSearch();
   return fragment;
 }
 
